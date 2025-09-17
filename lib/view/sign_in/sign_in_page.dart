@@ -9,14 +9,13 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Login Page',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        textTheme: TextTheme(titleMedium: TextStyle(fontSize: 20))
+        textTheme: TextTheme(titleMedium: TextStyle(fontSize: 16, ))
       ),
       home: const LoginPage(title: 'Dental Booking App'),
       debugShowCheckedModeBanner: false,
@@ -31,13 +30,15 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var deviceSize = MediaQuery.sizeOf(context);
+
     return Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Color.fromARGB(255, 116, 189, 248),
-        // backgroundColor: Colors.blue.withOpacity(0.9),
         body: Column(
           children: [
-            UpperBackgound(),
+            UpperBackground(deviceSize: deviceSize,),
             Expanded(
                 child: SignInBody()
             ),

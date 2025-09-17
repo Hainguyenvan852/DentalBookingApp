@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-class UpperBackgound extends StatelessWidget{
+class UpperBackground extends StatelessWidget{
 
-  const UpperBackgound({super.key});
+  final Size deviceSize;
+  const UpperBackground({super.key, required this.deviceSize});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 260,
+      height: deviceSize.height * 4/15,
       child: Stack(
         fit: StackFit.expand,
         children: [

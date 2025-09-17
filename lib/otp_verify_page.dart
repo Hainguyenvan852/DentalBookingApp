@@ -11,10 +11,8 @@ class OtpVerifyPage extends StatelessWidget{
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
-        title: Padding(
-          padding: const EdgeInsets.only(left: 55.0),
-          child: Text("Mã xác thực OTP", style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),),
-        ),
+        centerTitle: true,
+        title: Text("Mã xác thực OTP", style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),),
         shape: UnderlineInputBorder(borderSide: BorderSide(width: 0.8)),
       ),
       body: Container(

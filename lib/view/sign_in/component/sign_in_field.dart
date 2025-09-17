@@ -18,32 +18,34 @@ class SignInFieldState extends State<SignInField>{
 
   @override
   Widget build(BuildContext context) {
+
+    final deviceSize = MediaQuery.sizeOf(context);
+
     return Padding(
-      padding: const EdgeInsets.all(defaultPadding/2),
+      padding: const EdgeInsets.only(left:defaultPadding/2, right: defaultPadding/2),
       child: SizedBox(
-        height: 110,
+        height: deviceSize.height * 1.9/15,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: defaultPadding/5*2),
-              child: Text(widget.title, style: TextStyle(fontSize: 20,), textAlign: TextAlign.start,),
+              child: Text(widget.title, style: TextStyle(fontSize: 16,), textAlign: TextAlign.start,),
             ),
             Container(
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: SizedBox(
-                height: 60,
+                height: deviceSize.height * 0.9/15,
                 child: Row(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: defaultPadding/5*2, right:defaultPadding/4*3),
-                      child: Icon(widget.obscureText == 0 ? Icons.phone : Icons.lock, size: 30, color: Colors.grey,),
+                      child: Icon(widget.obscureText == 0 ? Icons.phone : Icons.lock, size: 23, color: Colors.grey,),
                     ),
-                    // Divider(thickness: 2, height: 5, color: Colors.black,),
                     Container(
-                      height: 30,
+                      height: 23,
                       width: 1,
                       color: Colors.grey,
                     ),
@@ -55,7 +57,7 @@ class SignInFieldState extends State<SignInField>{
                           decoration: InputDecoration(
                               border: InputBorder.none
                           ),
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: 17),
                         ),
                       ),
                     )
