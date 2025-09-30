@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Basket body -->
+  <path d="M5 9H19V17C19 18.1046 18.1046 19 17 19H7C5.89543 19 5 18.1046 5 17V9Z"
+        stroke="#8E8EA0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Handles -->
+  <path d="M8 9L9.5 6M16 9L14.5 6" stroke="#8E8EA0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Minus bar -->
+  <rect x="8" y="13.75" width="8" height="1.5" rx="0.75" fill="#8E8EA0"/>
+</svg>

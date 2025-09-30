@@ -5,8 +5,9 @@ class SignInField extends StatefulWidget{
 
   final String title;
   final int obscureText;
+  final TextEditingController textEditingController;
 
-  const SignInField({super.key, required this.title, required this.obscureText});
+  const SignInField({super.key, required this.title, required this.obscureText, required this.textEditingController});
 
   @override
   State<StatefulWidget> createState() {
@@ -19,12 +20,11 @@ class SignInFieldState extends State<SignInField>{
   @override
   Widget build(BuildContext context) {
 
-    final deviceSize = MediaQuery.sizeOf(context);
 
     return Padding(
       padding: const EdgeInsets.only(left:defaultPadding/2, right: defaultPadding/2),
       child: SizedBox(
-        height: deviceSize.height * 1.9/15,
+        height: 110,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -37,7 +37,7 @@ class SignInFieldState extends State<SignInField>{
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: SizedBox(
-                height: deviceSize.height * 0.9/15,
+                height:55,
                 child: Row(
                   children: [
                     Padding(
@@ -53,6 +53,7 @@ class SignInFieldState extends State<SignInField>{
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.0),
                         child: TextField(
+                          controller: widget.textEditingController,
                           obscureText: (widget.obscureText == 0 ? false : true),
                           decoration: InputDecoration(
                               border: InputBorder.none

@@ -1,24 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DatePickerField extends StatefulWidget{
-
-  const DatePickerField({super.key, });
-
-  @override
-  State<StatefulWidget> createState() {
-    return DatePickerFieldState();
-  }
-}
-
-class DatePickerFieldState extends State<DatePickerField>{
-  final _dateController = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-    _dateController.dispose();
-  }
+class DatePickerField extends StatelessWidget{
+  final TextEditingController dateController;
+  const DatePickerField({super.key, required this.dateController, });
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? selectedDate = await showDatePicker(
@@ -27,7 +12,7 @@ class DatePickerFieldState extends State<DatePickerField>{
         lastDate: DateTime.now());
 
     if (selectedDate != null){
-      _dateController.text = DateFormat('dd/MM/yyyy').format(selectedDate);
+      dateController.text = DateFormat('dd/MM/yyyy').format(selectedDate);
     }
   }
 
@@ -68,7 +53,7 @@ class DatePickerFieldState extends State<DatePickerField>{
                         child: Padding(
                             padding: const EdgeInsets.only(left: 15.0),
                             child: TextFormField(
-                                controller: _dateController,
+                                controller: dateController,
                                 readOnly: true,
                                 style: TextStyle(fontSize: 16),
                                 decoration: InputDecoration(
@@ -92,3 +77,4 @@ class DatePickerFieldState extends State<DatePickerField>{
     );
   }
 }
+

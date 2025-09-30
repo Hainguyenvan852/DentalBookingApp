@@ -1,25 +1,26 @@
-import 'package:dental_booking_app/otp_verify_page.dart';
+import 'package:dental_booking_app/view/sign_in/bloc/auth_cubit.dart';
+import 'package:dental_booking_app/view/sign_in/bloc/auth_state.dart';
 import 'package:dental_booking_app/view/sign_up/component/address_field.dart';
 import 'package:dental_booking_app/view/sign_up/component/branch_selection_field.dart';
 import 'package:dental_booking_app/view/sign_up/component/date_field.dart';
 import 'package:dental_booking_app/view/sign_up/component/email_field.dart';
-import 'package:dental_booking_app/view/sign_up/component/log_up_button.dart';
 import 'package:dental_booking_app/view/sign_up/component/name_field.dart';
 import 'package:dental_booking_app/view/sign_up/component/password_field.dart';
 import 'package:dental_booking_app/view/sign_up/component/phone_number_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterPage extends StatefulWidget{
+class SignUpPage extends StatefulWidget{
 
-  const RegisterPage({super.key});
+  const SignUpPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return RegisterPageState();
+    return SignUpPageState();
   }
 }
 
-class RegisterPageState extends State<RegisterPage> {
+class SignUpPageState extends State<SignUpPage> {
 
   bool _canSubmit = false;
   bool _branchSelected = false;
@@ -29,6 +30,8 @@ class RegisterPageState extends State<RegisterPage> {
   final _phoneCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
+  final _dateCtrl = TextEditingController();
+  final _addressCtrl = TextEditingController();
 
   final _nameKey = GlobalKey<FormFieldState>();
   final _phoneKey = GlobalKey<FormFieldState>();
@@ -46,22 +49,22 @@ class RegisterPageState extends State<RegisterPage> {
     final emailHasError = _emailKey.currentState?.hasError ?? true;
     final passwordHasError = _passwordKey.currentState?.hasError ?? true;
     bool nameOk, phoneOk, emailOk, passwordOk;
-    if (nameHasError) {
+    if (nameHasError && _nameCtrl.text.isEmpty) {
       nameOk = false;
     } else {
       nameOk = true;
     }
-    if (phoneHasError) {
+    if (phoneHasError && _phoneCtrl.text.isEmpty) {
       phoneOk = false;
     } else {
       phoneOk = true;
     }
-    if (emailHasError) {
+    if (emailHasError && _emailCtrl.text.isEmpty) {
       emailOk = false;
     } else {
       emailOk = true;
     }
-    if (passwordHasError) {
+    if (passwordHasError && _passwordCtrl.text.isEmpty) {
       passwordOk = false;
     } else {
       passwordOk = true;
@@ -87,10 +90,12 @@ class RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
 
-    var deviceSize = MediaQuery.sizeOf(context);
-
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () => context.read<AuthCubit>().requestSignIn(),
+            icon: Icon(Icons.arrow_back_ios_new, size: 20,)
+        ),
         toolbarHeight: 70,
         centerTitle: true,
         title: Text("Đăng ký",
@@ -98,67 +103,105 @@ class RegisterPageState extends State<RegisterPage> {
         shape: RoundedRectangleBorder(
             side: BorderSide(width: 0.7, color: Colors.grey)),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              children: [
-                NameField(
-                    nameCtrl: _nameCtrl,
-                    nameKey: _nameKey,
-                    onChanged: (v) {
-                      _validateOnly(_nameKey);
-                    }
-                ),
-                PhoneNumberField(
-                    phoneCtrl: _phoneCtrl,
-                    phoneKey: _phoneKey,
-                    onChanged: (v) {
-                      _validateOnly(_phoneKey);
-                    }
-                ),
-                EmailField(
-                  emailCtrl: _emailCtrl,
-                  emailKey: _emailKey,
-                  onChanged: (v) {
-                    _validateOnly(_emailKey);
-                  },
-                ),
-                AddressField(),
-                PasswordField(
-                  passwordCtrl: _passwordCtrl,
-                  passwordKey: _passwordKey,
-                  onChanged: (v) {
-                    _validateOnly(_passwordKey);
-                  },
-                ),
-                DatePickerField(),
-                BranchSelectionField(
-                  value: selectedBranch,
-                  onChanged: (v) {
-                    setState(() {
-                      selectedBranch = v;
-                    });
-                    _branchSelected = true;
-                    _recomputeCanSubmit();
-                  },
-                ),
-              ],
-            ),
-          ),
-          Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 40),
-              child: LogUpButton(
-                enable: _canSubmit, onPressed: _onPressedLogUp,)
-          ),
-        ],
+      body: BlocConsumer<AuthCubit, AuthState>(
+        listenWhen: (p, c) => c is AuthUnauthenticated || c is AuthNeedsEmailVerify,
+        listener: (context, state) {
+          if (state is AuthUnauthenticated && state.message != null){
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message!))
+            );
+          }
+        },
+        builder: (context, state) {
+          final loading = state is AuthLoading;
+          return Stack(
+            children: [
+              Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        NameField(
+                            nameCtrl: _nameCtrl,
+                            nameKey: _nameKey,
+                            onChanged: (v) {
+                              _validateOnly(_nameKey);
+                            }
+                        ),
+                        PhoneNumberField(
+                            phoneCtrl: _phoneCtrl,
+                            phoneKey: _phoneKey,
+                            onChanged: (v) {
+                              _validateOnly(_phoneKey);
+                            }
+                        ),
+                        EmailField(
+                          emailCtrl: _emailCtrl,
+                          emailKey: _emailKey,
+                          onChanged: (v) {
+                            _validateOnly(_emailKey);
+                          },
+                        ),
+                        AddressField(addressCtrl: _addressCtrl,),
+                        PasswordField(
+                          passwordCtrl: _passwordCtrl,
+                          passwordKey: _passwordKey,
+                          onChanged: (v) {
+                            _validateOnly(_passwordKey);
+                          },
+                        ),
+                        DatePickerField(dateController: _dateCtrl,),
+                        BranchSelectionField(
+                          value: selectedBranch,
+                          onChanged: (v) {
+                            setState(() {
+                              selectedBranch = v;
+                            });
+                            _branchSelected = true;
+                            _recomputeCanSubmit();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 40),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 60,
+                        child: ElevatedButton(
+                            onPressed: !_canSubmit ? null : () async{
+                              context.read<AuthCubit>().signUp(_emailCtrl.text.trim(),  _passwordCtrl.text.trim(),  _nameCtrl.text.trim(),  _phoneCtrl.text.trim(), _dateCtrl.text.trim(),  _addressCtrl.text.trim(), );
+                            },
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
+                                backgroundColor: Colors.lightBlue,
+                                foregroundColor: Colors.white
+                            ),
+                            child: Text("Đăng ký", style: TextStyle(fontSize: 20,),)
+                        ),
+                      )
+                  ),
+                ],
+              ),
+              // if(loading)
+              //   Positioned.fill(
+              //       child: IgnorePointer(
+              //         ignoring: true,
+              //         child: Container(
+              //           color: Colors.black12,
+              //           alignment: Alignment.center,
+              //           child: const CircularProgressIndicator(
+              //             color: Colors.lightBlueAccent,
+              //           ),
+              //         ),
+              //       )
+              //   )
+            ],
+          );
+        },
       ),
     );
-  }
-
-  void _onPressedLogUp(){
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => OtpVerifyPage(email: "hainguyenvan852")));
   }
 }
 

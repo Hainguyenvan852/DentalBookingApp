@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AddressField extends StatelessWidget{
-
-  const AddressField({super.key});
+  final TextEditingController addressCtrl;
+  const AddressField({super.key, required this.addressCtrl});
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +45,14 @@ class AddressField extends StatelessWidget{
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.0),
                         child: TextFormField(
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
+                          controller: addressCtrl,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: "Nhập địa chỉ"
-                            ),
-                            style: TextStyle(fontSize: 16),
+                          ),
+                          style: TextStyle(fontSize: 16),
                         ),
                       ),
                     )

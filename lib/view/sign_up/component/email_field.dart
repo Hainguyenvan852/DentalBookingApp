@@ -61,7 +61,7 @@ class EmailField extends StatelessWidget{
                           ),
                           style: TextStyle(fontSize: 16),
                           validator: (value){
-                            if(value == null || value!.isEmpty ){
+                            if(value == null || value.isEmpty ){
                               return "Vui lòng nhập email";
                             }
                             if(!RegExp(r'^\w+@gmail\.com').hasMatch(value)){

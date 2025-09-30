@@ -1,32 +1,12 @@
+import 'package:dental_booking_app/view/sign_in/bloc/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/auth_state.dart';
 import 'component/sign_in_body.dart';
 import 'component/upper_background.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Login Page',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        textTheme: TextTheme(titleMedium: TextStyle(fontSize: 16, ))
-      ),
-      home: const LoginPage(title: 'Dental Booking App'),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key, required this.title});
-
-  final String title;
+class SignInPage extends StatelessWidget {
+  const SignInPage({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +16,37 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Color.fromARGB(255, 116, 189, 248),
-        body: Column(
-          children: [
-            UpperBackground(deviceSize: deviceSize,),
-            Expanded(
-                child: SignInBody()
-            ),
-          ],
-        )
+        body: BlocConsumer<AuthCubit, AuthState>(
+          listenWhen: (p, c) => c is AuthUnauthenticated,
+          listener: (context, state){
+            if(state is AuthUnauthenticated && state.message != null){
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message!),
+                    backgroundColor: Colors.black38,
+                  ),
+                );
+              });
+            }
+          },
+          builder: (context, state){
+            return Stack(
+              children:
+                [
+                  Column(
+                    children: [
+                      UpperBackground(deviceSize: deviceSize,),
+                      Expanded(
+                          child: SignInBody()
+                      ),
+                    ],
+                  ),
+
+                ],
+            );
+          },
+        ),
     );
   }
 }

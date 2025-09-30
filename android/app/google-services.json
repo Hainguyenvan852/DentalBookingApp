@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "200817212131",
+    "project_id": "dental-booking-app-8934f",
+    "storage_bucket": "dental-booking-app-8934f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200817212131:android:3d1ab4ab28bd6ff31f63d6",
+        "android_client_info": {
+          "package_name": "com.example.dental_booking_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP1IsoIU4xyke8vS_8OBUh8iYIRyAwlkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
