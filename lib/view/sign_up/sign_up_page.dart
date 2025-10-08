@@ -113,90 +113,72 @@ class SignUpPageState extends State<SignUpPage> {
           }
         },
         builder: (context, state) {
-          final loading = state is AuthLoading;
-          return Stack(
+          return Column(
             children: [
-              Column(
-                children: [
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        NameField(
-                            nameCtrl: _nameCtrl,
-                            nameKey: _nameKey,
-                            onChanged: (v) {
-                              _validateOnly(_nameKey);
-                            }
-                        ),
-                        PhoneNumberField(
-                            phoneCtrl: _phoneCtrl,
-                            phoneKey: _phoneKey,
-                            onChanged: (v) {
-                              _validateOnly(_phoneKey);
-                            }
-                        ),
-                        EmailField(
-                          emailCtrl: _emailCtrl,
-                          emailKey: _emailKey,
-                          onChanged: (v) {
-                            _validateOnly(_emailKey);
-                          },
-                        ),
-                        AddressField(addressCtrl: _addressCtrl,),
-                        PasswordField(
-                          passwordCtrl: _passwordCtrl,
-                          passwordKey: _passwordKey,
-                          onChanged: (v) {
-                            _validateOnly(_passwordKey);
-                          },
-                        ),
-                        DatePickerField(dateController: _dateCtrl,),
-                        BranchSelectionField(
-                          value: selectedBranch,
-                          onChanged: (v) {
-                            setState(() {
-                              selectedBranch = v;
-                            });
-                            _branchSelected = true;
-                            _recomputeCanSubmit();
-                          },
-                        ),
-                      ],
+              Expanded(
+                child: ListView(
+                  children: [
+                    NameField(
+                        nameCtrl: _nameCtrl,
+                        nameKey: _nameKey,
+                        onChanged: (v) {
+                          _validateOnly(_nameKey);
+                        }
                     ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 40),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 60,
-                        child: ElevatedButton(
-                            onPressed: !_canSubmit ? null : () async{
-                              context.read<AuthCubit>().signUp(_emailCtrl.text.trim(),  _passwordCtrl.text.trim(),  _nameCtrl.text.trim(),  _phoneCtrl.text.trim(), _dateCtrl.text.trim(),  _addressCtrl.text.trim(), );
-                            },
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
-                                backgroundColor: Colors.lightBlue,
-                                foregroundColor: Colors.white
-                            ),
-                            child: Text("Đăng ký", style: TextStyle(fontSize: 20,),)
-                        ),
-                      )
-                  ),
-                ],
+                    PhoneNumberField(
+                        phoneCtrl: _phoneCtrl,
+                        phoneKey: _phoneKey,
+                        onChanged: (v) {
+                          _validateOnly(_phoneKey);
+                        }
+                    ),
+                    EmailField(
+                      emailCtrl: _emailCtrl,
+                      emailKey: _emailKey,
+                      onChanged: (v) {
+                        _validateOnly(_emailKey);
+                      },
+                    ),
+                    AddressField(addressCtrl: _addressCtrl,),
+                    PasswordField(
+                      passwordCtrl: _passwordCtrl,
+                      passwordKey: _passwordKey,
+                      onChanged: (v) {
+                        _validateOnly(_passwordKey);
+                      },
+                    ),
+                    DatePickerField(dateController: _dateCtrl,),
+                    BranchSelectionField(
+                      value: selectedBranch,
+                      onChanged: (v) {
+                        setState(() {
+                          selectedBranch = v;
+                        });
+                        _branchSelected = true;
+                        _recomputeCanSubmit();
+                      },
+                    ),
+                  ],
+                ),
               ),
-              // if(loading)
-              //   Positioned.fill(
-              //       child: IgnorePointer(
-              //         ignoring: true,
-              //         child: Container(
-              //           color: Colors.black12,
-              //           alignment: Alignment.center,
-              //           child: const CircularProgressIndicator(
-              //             color: Colors.lightBlueAccent,
-              //           ),
-              //         ),
-              //       )
-              //   )
+              Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 40),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 60,
+                    child: ElevatedButton(
+                        onPressed: !_canSubmit ? null : () async{
+                          context.read<AuthCubit>().signUp(_emailCtrl.text.trim(),  _passwordCtrl.text.trim(),  _nameCtrl.text.trim(),  _phoneCtrl.text.trim(), _dateCtrl.text.trim(),  _addressCtrl.text.trim(), );
+                        },
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
+                            backgroundColor: Colors.lightBlue,
+                            foregroundColor: Colors.white
+                        ),
+                        child: Text("Đăng ký", style: TextStyle(fontSize: 20,),)
+                    ),
+                  )
+              ),
             ],
           );
         },

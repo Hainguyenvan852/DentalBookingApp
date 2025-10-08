@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
+<svg fill="#2196f3" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" transform="matrix(-1, 0, 0, 1, 0, 0)">
+
+<g id="SVGRepo_bgCarrier" stroke-width="0"/>
+
+<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+
+<g id="SVGRepo_iconCarrier"> <g> <path d="M480,64H32C14.328,64,0,78.328,0,96v320c0,17.672,14.328,32,32,32h448c17.672,0,32-14.328,32-32V96 C512,78.328,497.672,64,480,64z M448,128v190.383l-83.5-104.375c-2.984-3.734-7.484-5.938-12.266-6.008 c-4.75-0.102-9.344,1.992-12.422,5.641l-88.5,104.117l-48.906-41.906c-5.656-4.836-13.875-5.148-19.875-0.758L64,362.02V128H448z"/> <circle cx="160" cy="192" r="32"/> </g> </g>
+
+</svg>

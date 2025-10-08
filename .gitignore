@@ -23,6 +23,10 @@ migrate_working_dir/
 # is commented out by default.
 #.vscode/
 
+# Bỏ qua toàn bộ thư mục firebase-admin-tools khi commit len git
+firebase-admin-tools/
+
+
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id

@@ -1,10 +1,14 @@
+import "package:dental_booking_app/res/test.dart";
+import "package:dental_booking_app/view/main_ui/service_page/service_page.dart";
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
+import "home_page/home_page.dart";
 
-class HomePage extends StatefulWidget{
 
-  const HomePage({super.key});
+class NavigationPage extends StatefulWidget{
+
+  const NavigationPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -12,10 +16,11 @@ class HomePage extends StatefulWidget{
   }
 }
 
-class _NavigationPageState extends State<HomePage>{
+class _NavigationPageState extends State<NavigationPage>{
   int _index = 0;
   final pages = [
     HomePage(),
+    ServicePage()
   ];
 
   @override
@@ -23,7 +28,7 @@ class _NavigationPageState extends State<HomePage>{
     return Scaffold(
       body: IndexedStack(index: _index, children: pages,),
       bottomNavigationBar: NavigationBar(
-          height: 100,
+          height: 95,
           selectedIndex: _index,
           onDestinationSelected: (i){
             setState(() {
@@ -38,63 +43,90 @@ class _NavigationPageState extends State<HomePage>{
                 fontWeight: FontWeight.bold
             );
           }),
-          // indicatorColor: Colors.cyan,
           destinations: [
-            NavigationDestination(
-              icon: SvgPicture.asset(
-                "assets/icons/home_outline_minus.svg", color: Colors.grey,
-                height: 20,
-              ),
-              selectedIcon: SvgPicture.asset(
-                "assets/icons/home_outline_minus.svg", color: Colors.blue,
-                height: 20
-              ),
-              label: 'Trang chủ',
-            ),
-            NavigationDestination(
-              icon: SvgPicture.asset(
-                "assets/icons/tooth-svgrepo-com.svg", color: Colors.grey,
-                height: 20,
-              ),
-              selectedIcon: SvgPicture.asset(
-                  "assets/icons/tooth-svgrepo-com.svg", color: Colors.blue,
-                height: 20
-              ),
-              label: 'Dịch vụ',
-            ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.only(bottom: 20),
               child: NavigationDestination(
                 icon: SvgPicture.asset(
-                  "assets/icons/calendar-svgrepo-com-3.svg",
-                  height: 45,
+                  "assets/icons/home_outline_minus.svg", color: Colors.grey,
+                  height: 20,
                 ),
-                label: 'Đặt lịch',
+                selectedIcon: SvgPicture.asset(
+                    "assets/icons/home_outline_minus.svg", color: Colors.blue,
+                    height: 20
+                ),
+                label: 'Trang chủ',
               ),
             ),
-            NavigationDestination(
-              icon: SvgPicture.asset(
-                "assets/icons/basket_minus.svg", color: Colors.grey,
-                height: 20,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: NavigationDestination(
+                icon: SvgPicture.asset(
+                  "assets/icons/tooth.svg", color: Colors.grey,
+                  height: 20,
+                ),
+                selectedIcon: SvgPicture.asset(
+                    "assets/icons/tooth.svg", color: Colors.blue,
+                    height: 20
+                ),
+                label: 'Dịch vụ',
               ),
-              selectedIcon: SvgPicture.asset(
-                  "assets/icons/basket_minus.svg", color: Colors.blue,
-                height: 20
-              ),
-              label: 'Sản phẩm',
             ),
-            NavigationDestination(
-              icon: SvgPicture.asset(
-                "assets/icons/user_outline.svg", color: Colors.grey,
-                height: 20,
+            SizedBox(
+              width: 40,
+              height: 30,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: NavigationDestination(
+                icon: SvgPicture.asset(
+                  "assets/icons/basket_minus.svg", color: Colors.grey,
+                  height: 20,
+                ),
+                selectedIcon: SvgPicture.asset(
+                    "assets/icons/basket_minus.svg", color: Colors.blue,
+                    height: 20
+                ),
+                label: 'Sản phẩm',
               ),
-              selectedIcon: SvgPicture.asset(
-                  "assets/icons/user_outline.svg", color: Colors.blue,
-                height: 20
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: NavigationDestination(
+                icon: SvgPicture.asset(
+                  "assets/icons/user_outline.svg", color: Colors.grey,
+                  height: 20,
+                ),
+                selectedIcon: SvgPicture.asset(
+                    "assets/icons/user_outline.svg", color: Colors.blue,
+                    height: 20
+                ),
+                label: 'Cá nhân',
               ),
-              label: 'Cá nhân',
             )
           ]
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Transform.translate(
+        offset: Offset(0, 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 48, width: 48,
+              child: FloatingActionButton(
+                onPressed: () {},
+                child: SvgPicture.asset("assets/icons/calendar-circle.svg", height: 56),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text('Đặt lịch', style: TextStyle(
+                color: Colors.blue,
+                fontSize: 12,
+                fontWeight: FontWeight.bold
+            ),),
+          ],
+        ),
       ),
     );
   }

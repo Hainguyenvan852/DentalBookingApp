@@ -90,7 +90,10 @@ class AuthCubit extends Cubit<AuthState> {
     try { await repo.sendResetPassword(email); } catch (_) {}
   }
 
-  Future<void> signOut() => repo.signOut();
+  Future<void> signOut() async {
+    emit(AuthLoading());
+    await repo.signOut();
+  }
 
   String _friendly(Object e) {
     final msg = e.toString();

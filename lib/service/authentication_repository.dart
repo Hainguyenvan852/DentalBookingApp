@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dental_booking_app/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository {

@@ -97,7 +97,6 @@ class _SignInBodyState extends State<SignInBody> {
   }
 
   void registerClick(BuildContext context) {
-    // Navigator.pushNamed(context, '/signup');
     context.read<AuthCubit>().requestSignUp();
   }
 }

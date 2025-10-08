@@ -12,17 +12,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            useMaterial3: true,
-          ),
-          home: AuthGate(),
-          routes: {
-            '/signin' : (_) => const SignInPage(),
-            '/signup' : (_) => const SignUpPage(),
-            '/home' : (_) => const HomePage(),
-            '/verify' : (_) => const VerifyEmailPage()
-          },
+      scrollBehavior: NoStretchBehavior(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+      ),
+      home: AuthGate(),
+      routes: {
+        '/signin' : (_) => const SignInPage(),
+        '/signup' : (_) => const SignUpPage(),
+        '/home' : (_) => const NavigationPage(),
+        '/verify' : (_) => const VerifyEmailPage()
+      },
     );
+  }
+}
+
+class NoStretchBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
   }
 }

@@ -45,6 +45,8 @@ dependencies:
   flutter_bloc: ^9.1.1
   google_fonts: ^6.3.2
 
+  flutter_neat_and_clean_calendar: ^0.4.16
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -75,13 +77,31 @@ flutter:
     - assets/images/backgroundImg.jpg
     - assets/images/email-send-2.png
     - assets/images/email-success-2.png
+    - assets/images/banner1.jpg
+    - assets/images/banner2.jpg
+    - assets/images/banner3.png
+    - assets/images/implant.png
+    - assets/images/niengrang.png
+    - assets/images/phuchinh.png
+    - assets/images/khamtongquat.png
 
     - assets/icons/home_outline_minus.svg
-    - assets/icons/tooth-svgrepo-com.svg
+    - assets/icons/tooth.svg
     - assets/icons/user_outline.svg
     - assets/icons/basket_minus.svg
-    - assets/icons/calendar-svgrepo-com-3.svg
-    - assets/icons/calendar-svgrepo-com-6.svg
+    - assets/icons/calendar-circle.svg
+    - assets/icons/add-circle.svg
+    - assets/icons/calendar-6.svg
+    - assets/icons/catalog.svg
+    - assets/icons/clock.svg
+    - assets/icons/notification.svg
+    - assets/icons/notification-new.svg
+    - assets/icons/picture.svg
+    - assets/icons/shield.svg
+    - assets/icons/shopping-cart.svg
+    - assets/icons/toothbrush.svg
+    - assets/icons/calendar.svg
+    - assets/icons/mark.svg
 
 
   # To add assets to your application, add an assets section, like this:

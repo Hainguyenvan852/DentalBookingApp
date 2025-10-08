@@ -32,7 +32,7 @@ class AuthGate extends StatelessWidget {
           if (state is AuthRequestSignUp) return SignUpPage();
           if (state is AuthUnauthenticated) return const SignInPage();
           if (state is AuthNeedsEmailVerify) return const VerifyEmailPage();
-          if (state is AuthAuthenticated) return const HomePage();
+          if (state is AuthAuthenticated) return const NavigationPage();
           return const SignInPage();
         },
     );
