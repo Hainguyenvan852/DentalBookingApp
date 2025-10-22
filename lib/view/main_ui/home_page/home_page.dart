@@ -1,4 +1,5 @@
 import 'package:dental_booking_app/view/main_ui/notification_page/notification_page.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../model/user_model.dart';
 import '../../repository/user_repository.dart';
@@ -17,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final UserModel user;
+  late final User user;
   final repo = UserRepository();
 
   @override
@@ -32,8 +33,8 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     const BannerAdvantage(),
                     const FeatureButtons(),
-                    CalenderField(),
-                    const ServicesBox()
+                    const CalenderField(),
+                    const ServicesBox(),
                   ],
                 ),
               )

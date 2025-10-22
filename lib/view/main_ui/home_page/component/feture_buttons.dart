@@ -1,5 +1,10 @@
+import 'package:dental_booking_app/view/main_ui/home_page/my_appointment_page/my_appointment_page.dart';
+import 'package:dental_booking_app/view/main_ui/product_catalog_page/product_catalog_page.dart';
+import 'package:dental_booking_app/view/main_ui/service_page/service_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../booking_page/booking_page.dart';
 
 class FeatureButtons extends StatelessWidget {
   const FeatureButtons({super.key});
@@ -19,13 +24,15 @@ class FeatureButtons extends StatelessWidget {
           Column(
             children: [
               IconButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => BookingPage(initService: null,)));
+                },
                 icon: SvgPicture.asset('assets/icons/calendar.svg', width: 20,),
                 style: IconButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)
                     ),
-                    backgroundColor: Colors.blueGrey[50]
+                    backgroundColor: Colors.lightBlue[50]
                 ),
               ),
               Text('Đặt lịch', style: TextStyle(fontSize: 13),)
@@ -34,13 +41,15 @@ class FeatureButtons extends StatelessWidget {
           Column(
             children: [
               IconButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyAppointmentPage()));
+                },
                 icon: SvgPicture.asset('assets/icons/clock.svg', color: Colors.blue,),
                 style: IconButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)
                     ),
-                    backgroundColor: Colors.blueGrey[50]
+                    backgroundColor: Colors.lightBlue[50]
                 ),
               ),
               Text('Lịch hẹn của\ntôi',
@@ -58,7 +67,7 @@ class FeatureButtons extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)
                     ),
-                    backgroundColor: Colors.blueGrey[50]
+                    backgroundColor: Colors.lightBlue[50]
                 ),
               ),
               Text('Quá trình\nđiều trị',
@@ -76,7 +85,7 @@ class FeatureButtons extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)
                     ),
-                    backgroundColor: Colors.blueGrey[50]
+                    backgroundColor: Colors.lightBlue[50]
                 ),
               ),
               Text('Ảnh điều trị', style: TextStyle(fontSize: 13),)
@@ -85,13 +94,15 @@ class FeatureButtons extends StatelessWidget {
           Column(
             children: [
               IconButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProductCatalogPage()));
+                },
                 icon: SvgPicture.asset('assets/icons/toothbrush.svg', width: 22,),
                 style: IconButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)
                     ),
-                    backgroundColor: Colors.blueGrey[50]
+                    backgroundColor: Colors.lightBlue[50]
                 ),
               ),
               Text('Sản phẩm',
@@ -102,13 +113,15 @@ class FeatureButtons extends StatelessWidget {
           Column(
             children: [
               IconButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ServicePage()));
+                },
                 icon: SvgPicture.asset('assets/icons/catalog.svg', width: 24),
                 style: IconButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)
                     ),
-                    backgroundColor: Colors.blueGrey[50]
+                    backgroundColor: Colors.lightBlue[50]
                 ),
               ),
               Text('Danh mục\ndịch vụ',

@@ -1,18 +1,30 @@
-class ServiceModel {
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class Service {
+  final String id;
   final String name;
+  final int durationMinutes;
   final String description;
+  final String imageUrl;
 
-  ServiceModel({required this.name, required this.description});
+  Service({required this.id, required this.name, required this.durationMinutes, required this.description, required this.imageUrl});
 
+  factory Service.fromSnapshot(DocumentSnapshot snap){
+    final data = snap.data() as Map<String, dynamic>;
+
+    return Service(
+        name: data['name'],
+        description: data['description'],
+        id: snap.id,
+        imageUrl : data['imageUrl'],
+        durationMinutes: data['durationMinutes']
+    );
+  }
 
   Map<String, dynamic> toMap() => {
     'name': name,
-    'description': description
+    'durationMinutes': durationMinutes,
+    'description': description,
+    'imageUrl': imageUrl
   };
-
-
-  factory ServiceModel.fromMap(Map<String, dynamic> m) => ServiceModel(
-    name: m['name'] as String,
-    description: m['description'] as String,
-  );
 }

@@ -62,7 +62,7 @@ class _NavBarState extends State<NavBar> {
                   Padding(
                     padding: const EdgeInsets.only(top: 6.0),
                     child: FutureBuilder(
-                      future: _appointmentRepo.getToday(_auth.currentUser!.uid),
+                      future: _appointmentRepo.getTodayAppointment(_auth.currentUser!.uid),
                       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting){
                           return Center(
@@ -76,7 +76,7 @@ class _NavBarState extends State<NavBar> {
                           );
                         }
 
-                        final List<AppointmentModel> appointments = snapshot.data ?? [];
+                        final List<Appointment> appointments = snapshot.data ?? [];
 
                         if(appointments.isEmpty){
                           return Text('Hôm nay bạn không có lịch hẹn',

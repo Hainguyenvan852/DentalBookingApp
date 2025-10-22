@@ -16,9 +16,8 @@ class SignInPage extends StatelessWidget {
     return Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Color.fromARGB(255, 116, 189, 248),
-        body: BlocConsumer<AuthCubit, AuthState>(
-          listenWhen: (p, c) => c is AuthUnauthenticated,
-          listener: (context, state){
+        body: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state){
             if(state is AuthUnauthenticated && state.message != null){
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -29,8 +28,6 @@ class SignInPage extends StatelessWidget {
                 );
               });
             }
-          },
-          builder: (context, state){
             return Stack(
               children:
                 [

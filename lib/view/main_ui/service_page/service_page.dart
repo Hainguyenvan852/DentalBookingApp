@@ -1,3 +1,6 @@
+import 'package:dental_booking_app/view/main_ui/booking_page/booking_page.dart';
+import 'package:dental_booking_app/view/model/service_model.dart';
+import 'package:dental_booking_app/view/repository/service_repository.dart';
 import 'package:flutter/material.dart';
 
 import '../../../service/authentication_repository.dart';
@@ -14,33 +17,46 @@ class ServicePage extends StatelessWidget {
         shape: UnderlineInputBorder(
             borderSide: BorderSide(width: 0.5, color: Colors.grey)
         ),
+        backgroundColor: Colors.white,
         title: Text('Dịch vụ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          ServiceField(img: 'assets/images/implant.png', name: 'Implant', desscription: 'Phục hình răng hàm', onPressed: () {  },),
-          ServiceField(img: 'assets/images/niengrang.png', name: 'Chỉnh nha', desscription: 'Niềng răng phục hình', onPressed: () {  },),
-          ServiceField(img: 'assets/images/phuchinh.png', name: 'Phục hình', desscription: 'Bọc răng sứ thẩm mỹ', onPressed: () {  },),
-          ServiceField(img: 'assets/images/khamtongquat.png', name: 'Tổng quát', desscription: 'Tư vấn và khám tổng quát', onPressed: () {  },),
-          TextButton(onPressed: _authRepo.signOut, child: Text('dang xuat'))
-        ],
-      ),
+      body: FutureBuilder(
+          future: ServiceRepository().getAll(),
+          builder: (context, snap){
+            if (snap.connectionState == ConnectionState.waiting){
+              return Center(child: LinearProgressIndicator(),);
+            }
+            final services = snap.data;
+            if (services == null){
+              return Text("Khong co du lieu");
+            }
+            return ListView.builder(
+              itemCount: services.length,
+              itemBuilder: (context, index){
+                return ServiceField(service: services[index], onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => BookingPage(initService: services[index])));
+                });
+              }
+            );
+          }
+      )
     );
   }
 }
 
 class ServiceField extends StatelessWidget {
 
-  final String img, name, desscription;
+  final Service service;
   final VoidCallback onPressed;
 
-  const ServiceField({super.key, required this.img, required this.name, required this.desscription, required this.onPressed});
+  const ServiceField({super.key, required this.onPressed, required this.service});
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       child: SizedBox(
         height: 100,
         width: double.infinity,
@@ -54,14 +70,14 @@ class ServiceField extends StatelessWidget {
               width: 250,
               child: Row(
                 children: [
-                  Image.asset(img, width: 65, height: 65, fit: BoxFit.cover,),
+                  Image.network(service.imageUrl, width: 65, height: 65, fit: BoxFit.cover,),
                   SizedBox(width: 10,),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(name, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),),
-                      Text(desscription, style: TextStyle(fontSize: 12))
+                      Text(service.name, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),),
+                      Text(service.description, style: TextStyle(fontSize: 12))
                     ],
                   )
                 ],

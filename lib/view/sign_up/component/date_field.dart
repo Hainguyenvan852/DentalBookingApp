@@ -7,6 +7,7 @@ class DatePickerField extends StatelessWidget{
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? selectedDate = await showDatePicker(
+        locale: const Locale('vi', 'VN'),
         context: context,
         firstDate: DateTime(1900),
         lastDate: DateTime.now());
@@ -61,6 +62,7 @@ class DatePickerField extends StatelessWidget{
                                   border: InputBorder.none,
                                 ),
                                 onTap: (){
+                                  debugPrint(Localizations.localeOf(context).toString());
                                   FocusScope.of(context).requestFocus(FocusNode());
                                   _selectDate(context);
                                 }

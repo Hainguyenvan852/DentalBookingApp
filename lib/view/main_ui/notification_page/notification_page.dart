@@ -14,6 +14,7 @@ class NotificationPage extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Thông báo', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
           centerTitle: true,
+          backgroundColor: Colors.white,
           bottom: const TabBar(
             labelColor: Colors.black,
             unselectedLabelColor: Colors.grey,

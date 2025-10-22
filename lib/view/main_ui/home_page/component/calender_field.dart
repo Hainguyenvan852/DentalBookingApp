@@ -6,7 +6,7 @@ import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.
 
 class CalenderField extends StatefulWidget {
 
-  CalenderField({super.key});
+  const CalenderField({super.key});
 
   @override
   State<CalenderField> createState() => _CalenderFieldState();
@@ -16,16 +16,16 @@ class _CalenderFieldState extends State<CalenderField> {
 
   final _appointmentRepo = AppointmentRepository();
   final _auth = FirebaseAuth.instance;
-  late List<AppointmentModel> appointments;
-  List<NeatCleanCalendarEvent> _eventList = [];
+  late List<Appointment> appointments;
+  final List<NeatCleanCalendarEvent> _eventList = [];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blueGrey[50],
-      height: 270,
+      color: Colors.lightBlue[50],//Colors.blueGrey[50],
+      height: 290,
       child: FutureBuilder(
-          future: _appointmentRepo.getAll(_auth.currentUser!.uid),
+          future: _appointmentRepo.getConfirmedAndCompleted(_auth.currentUser!.uid),
           builder: (context, snapshot){
 
             if(snapshot.connectionState == ConnectionState.waiting){
@@ -53,6 +53,7 @@ class _CalenderFieldState extends State<CalenderField> {
               }
             }
             return Calendar(
+              showEvents: true,
               showEventListViewIcon: false,
               hideTodayIcon: true,
               startOnMonday: true,
@@ -76,3 +77,5 @@ class _CalenderFieldState extends State<CalenderField> {
     );
   }
 }
+
+

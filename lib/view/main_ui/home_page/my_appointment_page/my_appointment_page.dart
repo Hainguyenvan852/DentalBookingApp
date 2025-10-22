@@ -1,103 +1,48 @@
-import 'package:dental_booking_app/view/model/appointment_model.dart';
-import 'package:dental_booking_app/view/repository/appointment_detail_repository.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:dental_booking_app/view/repository/appointment_detail_repository.dart';
 import 'package:intl/intl.dart';
 
-import '../firebase_options.dart';
-import '../view/main_ui/home_page/my_appointment_page/appointment_detail_page.dart';
-import '../view/main_ui/home_page/my_appointment_page/blinking_box.dart';
+import 'appointment_detail_page.dart';
+import 'blinking_box.dart';
 
 
 
-
-Future<void> main() async{
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp( options: DefaultFirebaseOptions.currentPlatform, );
-  runApp(const MyApp());
-}
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
-      supportedLocales: const [
-        Locale('en', 'US'),
-        Locale('vi', 'VN'),
-      ],
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      home: TestPage()
-    );
-  }
-}
-
-class TestPage extends StatefulWidget {
-  const TestPage({super.key});
-
-  @override
-  State<TestPage> createState() => _TestPageState();
-}
-
-class _TestPageState extends State<TestPage> {
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class MyAppointmentPage extends StatelessWidget {
+  const MyAppointmentPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Lịch hẹn của tôi', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),),
-        centerTitle: true,
-        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, size: 22,)),
-        shape: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.grey,
-            width: 1,
-          )
+        appBar: AppBar(
+          title: Text('Lịch hẹn của tôi', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),),
+          centerTitle: true,
+          leading: IconButton(onPressed: () => Navigator.popUntil(context, (route) => route.isFirst), icon: Icon(Icons.arrow_back_ios, size: 22,)),
+          shape: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.grey,
+                width: 1,
+              )
+          ),
+          backgroundColor: Colors.white,
         ),
-        backgroundColor: Colors.white,
-      ),
-      body: FutureBuilder(
-          future: AppointmentDetailRepository(userId: 'fjG3DhpLVtMKXE0eP27w0O3SbYB2').getAppointmentDetail(),
-          builder: (context, snap){
-            if(snap.connectionState == ConnectionState.waiting){
-              return Center(child: CircularProgressIndicator(),);
-            }
+        body: FutureBuilder(
+            future: AppointmentDetailRepository(userId: 'fjG3DhpLVtMKXE0eP27w0O3SbYB2').getAppointmentDetail(),
+            builder: (context, snap){
+              if(snap.connectionState == ConnectionState.waiting){
+                return Center(child: CircularProgressIndicator(),);
+              }
 
-            if(snap.hasError){
-              return Text('Error: ${snap.error.toString()}');
+              if(snap.hasError){
+                return Text('Error: ${snap.error.toString()}');
+              }
+              return ListView.separated(
+                  itemBuilder: (context, index) => AppointmentBox(apmDetail: snap.data![index],),
+                  separatorBuilder: (context, index) => SizedBox(height: 8,),
+                  itemCount: snap.data!.length
+              );
             }
-            return ListView.separated(
-                itemBuilder: (context, index) => AppointmentBox(apmDetail: snap.data![index],),
-                separatorBuilder: (context, index) => SizedBox(height: 8,),
-                itemCount: snap.data!.length
-            );
-          }
-      )
-    );
+        )
+    );;
   }
 }
 
@@ -186,6 +131,3 @@ class AppointmentBox extends StatelessWidget {
     );
   }
 }
-
-
-

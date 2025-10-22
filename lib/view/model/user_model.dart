@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserModel {
+class User {
   final String uid;
   final String email;
   final String ?address;
@@ -10,7 +10,7 @@ class UserModel {
   final bool isActive;
 
 
-  UserModel({required this.uid, required this.email, required this.fullName, required this.phone, required this.address, required this.dob, required this.isActive});
+  User({required this.uid, required this.email, required this.fullName, required this.phone, required this.address, required this.dob, required this.isActive});
 
 
   Map<String, dynamic> toMap() => {
@@ -25,10 +25,10 @@ class UserModel {
   };
 
 
-  factory UserModel.fromMap(Map<String, dynamic> m) {
+  factory User.fromMap(Map<String, dynamic> m) {
     Timestamp ts = m['dob'] as Timestamp;
 
-    return UserModel(
+    return User(
       uid: m['uid'] as String,
       email: m['email'] as String,
       fullName: m['fullName'] as String,

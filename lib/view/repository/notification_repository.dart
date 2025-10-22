@@ -11,17 +11,17 @@ class NotificationRepository{
         .collection('users')
         .doc(_auth.currentUser!.uid)
         .collection('notifications')
-        .withConverter<NotificationModel>(
-        fromFirestore: (snap,_) => NotificationModel.fromSnapshot(snap),
+        .withConverter<Notification>(
+        fromFirestore: (snap,_) => Notification.fromSnapshot(snap),
         toFirestore: (apm,_) => apm.toMap()
     );
   }
 
   late final FirebaseFirestore _db;
-  late final CollectionReference<NotificationModel> _apmRef;
+  late final CollectionReference<Notification> _apmRef;
 
 
-  Future<List<NotificationModel>> getReminderNotif() async{
+  Future<List<Notification>> getReminderNotif() async{
     final today = DateTime.now();
     final day = today.subtract(Duration(days: 15));
 
@@ -34,7 +34,7 @@ class NotificationRepository{
     return snapshot.docs.map((docs) => docs.data()).toList();
   }
 
-  Future<List<NotificationModel>> getOverviewNotif() async{
+  Future<List<Notification>> getOverviewNotif() async{
     final today = DateTime.now();
     final day = today.subtract(Duration(days: 15));
 
@@ -47,7 +47,7 @@ class NotificationRepository{
     return snapshot.docs.map((docs) => docs.data()).toList();
   }
 
-  Future<List<NotificationModel>> getPaymentNotif() async{
+  Future<List<Notification>> getPaymentNotif() async{
     final today = DateTime.now();
     final day = today.subtract(Duration(days: 15));
 
@@ -60,11 +60,11 @@ class NotificationRepository{
     return snapshot.docs.map((docs) => docs.data()).toList();
   }
 
-  Future<void> add(NotificationModel apm) async {
+  Future<void> add(Notification apm) async {
     await _apmRef.add(apm);
   }
 
-  Future<void> update(NotificationModel apm, String apmId) async {
+  Future<void> update(Notification apm, String apmId) async {
     await _apmRef.doc(apmId).update(apm.toMap());
   }
 }
