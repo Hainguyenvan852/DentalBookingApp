@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dental_booking_app/view/model/service_model.dart';
+import 'package:dental_booking_app/data/model/service_model.dart';
 
 class ServiceRepository{
 
@@ -23,7 +23,7 @@ class ServiceRepository{
     return snapshot.docs.map((docs) => docs.data()).toList();
   }
 
-  Future<Service?> get(String serviceId) async {
+  Future<Service?> getById(String serviceId) async {
     final docs = await _serviceRef
         .doc(serviceId)
         .get();

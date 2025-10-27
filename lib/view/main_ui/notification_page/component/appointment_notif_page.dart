@@ -1,4 +1,4 @@
-import 'package:dental_booking_app/view/repository/notification_repository.dart';
+import 'package:dental_booking_app/data/repository/notification_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';

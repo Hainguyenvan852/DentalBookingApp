@@ -1,8 +1,7 @@
-import 'package:dental_booking_app/view/main_ui/booking_page/booking_bloc/booking_cubit.dart';
-import 'package:dental_booking_app/view/model/dentist_model.dart';
-import 'package:dental_booking_app/view/repository/dentist_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../logic/dentist_cubit.dart';
 
 class DentistSelection extends StatefulWidget {
   const DentistSelection({super.key,});

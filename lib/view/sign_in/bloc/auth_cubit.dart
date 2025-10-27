@@ -67,7 +67,7 @@ class AuthCubit extends Cubit<AuthState> {
       String password,
       String fullName,
       String phone,
-      String dob,
+      DateTime dob,
       String address,
       ) async {
     emit(const AuthLoading());

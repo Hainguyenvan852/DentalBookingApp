@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../model/appointment_model.dart';
+import '../../../../data/model/appointment_model.dart';
 
 class BlinkingContainer extends StatefulWidget {
   const BlinkingContainer({super.key, required this.appointment});

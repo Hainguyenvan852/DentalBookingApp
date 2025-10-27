@@ -1,66 +1,23 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
-import 'package:dental_booking_app/data/repository/gallery_repository.dart';
-import 'package:dental_booking_app/logic/gallery_cubit.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
-import '../data/model/image_model.dart';
-import '../data/repository/appointment_detail_repository.dart';
-import '../firebase_options.dart';
-import '../view/main_ui/home_page/my_appointment_page/appointment_detail_page.dart';
-import '../view/main_ui/home_page/my_appointment_page/blinking_box.dart';
+import '../../../data/model/image_model.dart';
+import '../../../data/repository/gallery_repository.dart';
+import '../../../logic/gallery_cubit.dart';
 
-
-
-
-Future<void> main() async{
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp( options: DefaultFirebaseOptions.currentPlatform, );
-  runApp(const MyApp());
-}
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-
+class GalleryPage extends StatefulWidget {
+  const GalleryPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
-      supportedLocales: const [
-        Locale('en', 'US'),
-        Locale('vi', 'VN'),
-      ],
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      home: TestPage()
-    );
-  }
+  State<GalleryPage> createState() => _GalleryPageState();
 }
 
-class TestPage extends StatefulWidget {
-  const TestPage({super.key});
+class _GalleryPageState extends State<GalleryPage> {
 
-  @override
-  State<TestPage> createState() => _TestPageState();
-}
-
-class _TestPageState extends State<TestPage> {
   late final GalleryRepository repo;
-
 
   @override
   void dispose() {
@@ -78,19 +35,19 @@ class _TestPageState extends State<TestPage> {
     return RepositoryProvider(
       create: (context) => repo,
       child: BlocProvider(
-        create: (context) => GalleryCubit(repo: repo),
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            centerTitle: true,
-            title: Text('Kho ảnh điều trị', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
-            leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, size: 19,)),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GalleryGrid(),
-          ),
-        )
+          create: (context) => GalleryCubit(repo: repo),
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              centerTitle: true,
+              title: Text('Kho ảnh điều trị', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+              leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, size: 19,)),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GalleryGrid(),
+            ),
+          )
       ),
     );
   }
@@ -135,7 +92,9 @@ class _GalleryGridState extends State<GalleryGrid> {
             return Center(child: Text('Lỗi: ${s.error}'));
           }
           // final showLoaderTail = s.lastDocs != null;
-
+          if(s.items.isEmpty){
+            return Center(child: Text('Bạn chưa có ảnh nào', ),);
+          }
           final grouped = groupBy(s.items, (img) => DateFormat('dd/MM/yyy').format(img.createdAt));
           final keys = grouped.keys.toList()..sort((a, b) => b.compareTo(a));
 
@@ -239,8 +198,4 @@ class PhotoViewer extends StatelessWidget {
     );
   }
 }
-
-
-
-
 

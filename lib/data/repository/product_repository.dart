@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dental_booking_app/view/model/product_model.dart';
+
+import '../model/product_model.dart';
 
 class ProductRepository{
 

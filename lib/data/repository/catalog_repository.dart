@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dental_booking_app/view/model/category_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../model/category_model.dart';
 
 class CatalogRepository{
   final _auth = FirebaseAuth.instance;

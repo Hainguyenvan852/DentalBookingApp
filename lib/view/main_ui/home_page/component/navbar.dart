@@ -1,15 +1,17 @@
-import 'package:dental_booking_app/view/model/appointment_model.dart';
-import 'package:dental_booking_app/view/repository/appointment_repository.dart';
-import 'package:dental_booking_app/view/repository/user_repository.dart';
+import 'package:dental_booking_app/data/model/appointment_model.dart';
+import 'package:dental_booking_app/data/repository/appointment_repository.dart';
+import 'package:dental_booking_app/data/repository/notification_repository.dart';
+import 'package:dental_booking_app/data/repository/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../cart_page.dart';
+import '../../notification_page/notification_page.dart';
+
 class NavBar extends StatefulWidget {
 
-  const NavBar({super.key, required this.notifOnPressed, required this.cartOnPressed});
-  final VoidCallback notifOnPressed;
-  final VoidCallback cartOnPressed;
+  const NavBar({super.key,});
 
   @override
   State<NavBar> createState() => _NavBarState();
@@ -87,7 +89,7 @@ class _NavBarState extends State<NavBar> {
                           );
                         }
                         else {
-                          return Text('Hôm nay bạn  có ${appointments.length} lịch hẹn',
+                          return Text('Hôm nay bạn có ${appointments.length} lịch hẹn',
                               style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey
@@ -104,16 +106,32 @@ class _NavBarState extends State<NavBar> {
               width: 48,
             ),
             IconButton(
-              onPressed: widget.cartOnPressed,
+              onPressed: () => cartOnPressed(context),
               icon: SvgPicture.asset('assets/icons/shopping-cart.svg', width: 21,),
             ),
             IconButton(
-              onPressed: widget.notifOnPressed,
-              icon: SvgPicture.asset('assets/icons/notification-new.svg', width: 20,),
+              onPressed: () => notificationOnPressed(context),
+              icon: SvgPicture.asset('assets/icons/notification.svg', width: 20,),
             ),
           ],
         ),
       ),
     );
   }
+}
+
+void notificationOnPressed(BuildContext context){
+  Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) => NotificationPage()
+      )
+  );
+}
+
+void cartOnPressed(BuildContext context){
+  Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) => CartScreen()
+      )
+  );
 }

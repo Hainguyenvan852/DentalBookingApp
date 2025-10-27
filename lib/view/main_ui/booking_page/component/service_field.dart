@@ -1,9 +1,10 @@
-import 'package:dental_booking_app/view/main_ui/booking_page/booking_bloc/booking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../model/service_model.dart';
+import '../../../../data/model/service_model.dart';
+import '../../../../logic/service_cubit.dart';
+
 
 
 

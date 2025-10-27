@@ -1,9 +1,7 @@
-import 'package:dental_booking_app/view/main_ui/notification_page/notification_page.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../../model/user_model.dart';
-import '../../repository/user_repository.dart';
-import '../cart_page.dart';
+import '../../../data/model/user_model.dart';
+import '../../../data/repository/appointment_repository.dart';
+import '../../../data/repository/user_repository.dart';
 import 'component/banner_advantage.dart';
 import 'component/calender_field.dart';
 import 'component/feture_buttons.dart';
@@ -20,6 +18,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late final User user;
   final repo = UserRepository();
+  late final AppointmentRepository apmRepo;
+
+
+  @override
+  void initState() {
+    super.initState();
+    apmRepo = AppointmentRepository();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +33,13 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
           child: Column(
             children: [
-              NavBar(notifOnPressed: () => notificationOnPressed(context), cartOnPressed: () => cartOnPressed(context),),
+              const NavBar(),
               Expanded(
                 child: ListView(
                   children: [
                     const BannerAdvantage(),
-                    const FeatureButtons(),
-                    const CalenderField(),
+                    FeatureButtons(),
+                    CalenderField(),
                     const ServicesBox(),
                   ],
                 ),
@@ -45,18 +51,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-void notificationOnPressed(BuildContext context){
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => NotificationPage()
-    )
-  );
-}
-
-void cartOnPressed(BuildContext context){
-  Navigator.of(context).push(
-      MaterialPageRoute(
-          builder: (context) => CartScreen()
-      )
-  );
-}

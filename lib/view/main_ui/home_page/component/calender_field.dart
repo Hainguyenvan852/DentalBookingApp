@@ -1,5 +1,5 @@
-import 'package:dental_booking_app/view/model/appointment_model.dart';
-import 'package:dental_booking_app/view/repository/appointment_repository.dart';
+import 'package:dental_booking_app/data/model/appointment_model.dart';
+import 'package:dental_booking_app/data/repository/appointment_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
@@ -17,12 +17,19 @@ class _CalenderFieldState extends State<CalenderField> {
   final _appointmentRepo = AppointmentRepository();
   final _auth = FirebaseAuth.instance;
   late List<Appointment> appointments;
-  final List<NeatCleanCalendarEvent> _eventList = [];
+  late final List<NeatCleanCalendarEvent> _eventList;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _eventList = [];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.lightBlue[50],//Colors.blueGrey[50],
+      color: Colors.lightBlue[50],
       height: 290,
       child: FutureBuilder(
           future: _appointmentRepo.getConfirmedAndCompleted(_auth.currentUser!.uid),
@@ -53,7 +60,7 @@ class _CalenderFieldState extends State<CalenderField> {
               }
             }
             return Calendar(
-              showEvents: true,
+              showEvents: false,
               showEventListViewIcon: false,
               hideTodayIcon: true,
               startOnMonday: true,

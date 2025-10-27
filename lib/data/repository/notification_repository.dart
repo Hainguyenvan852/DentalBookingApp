@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dental_booking_app/view/model/notification_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../model/notification_model.dart';
 
 class NotificationRepository{
   final _auth = FirebaseAuth.instance;
@@ -20,6 +21,17 @@ class NotificationRepository{
   late final FirebaseFirestore _db;
   late final CollectionReference<Notification> _apmRef;
 
+  Future<List<Notification>> getAll() async{
+    final today = DateTime.now();
+    final day = today.subtract(Duration(days: 15));
+
+    final snapshot = await _apmRef
+        .where('createdAt', isGreaterThanOrEqualTo: day)
+        .orderBy('createdAt')
+        .get();
+
+    return snapshot.docs.map((docs) => docs.data()).toList();
+  }
 
   Future<List<Notification>> getReminderNotif() async{
     final today = DateTime.now();

@@ -4,12 +4,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../model/clinic_model.dart';
-import '../../model/service_model.dart';
-import 'booking_bloc/booking_cubit.dart';
-import 'booking_bloc/booking_wiring.dart';
-import 'booking_bloc/firestore_repository.dart';
-import 'booking_bloc/repository_interface.dart';
+import '../../../data/model/appointment_model.dart';
+import '../../../data/model/clinic_model.dart';
+import '../../../data/model/service_model.dart';
+import '../../../data/repository/appointment_repository.dart';
+import '../../../data/repository/clinic_repository.dart';
+import '../../../data/repository/dentist_repository.dart';
+import '../../../data/repository/service_repository.dart';
+import '../../../logic/appointment_cubit.dart';
+import '../../../logic/booking_draft_cubit.dart';
+import '../../../logic/branch_cubit.dart';
+import '../../../logic/clinic_config_cubit.dart';
+import '../../../logic/date_cubit.dart';
+import '../../../logic/dentist_cubit.dart';
+import '../../../logic/note_cubit.dart';
+import '../../../logic/service_cubit.dart';
+import '../../../logic/slot_cubit.dart';
+import 'booking_wiring.dart';
 import 'component/branch_field.dart';
 import 'component/date_field.dart';
 import 'component/dentist_selection.dart';
@@ -42,16 +53,20 @@ class _BookingPageState extends State<BookingPage> {
   @override
   void dispose() {
     _wiring?.dispose();
+    dateCtrl.dispose();
+    branchCtrl.dispose();
+    serviceCtrl.dispose();
+    noteCtrl.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    clinicRepo = FirestoreClinicRepository();
-    doctorRepo = FirestoreDentistRepository();
-    serviceRepo = FirestoreServiceRepository();
-    apmRepo = FirestoreAppointmentRepository();
+    clinicRepo = ClinicRepository();
+    doctorRepo = DentistRepository();
+    serviceRepo = ServiceRepository();
+    apmRepo = AppointmentRepository();
   }
 
 
@@ -79,7 +94,6 @@ class _BookingPageState extends State<BookingPage> {
         ],
         child: Builder(
             builder:(context){
-
               _wiring ??= BookingWiringExample(
                 branchCubit: context.read<BranchCubit>(),
                 serviceCubit: context.read<ServiceCubit>(),
@@ -249,7 +263,7 @@ void _showSuccessSheet(BuildContext context) {
               const SizedBox(width: 12),
               Expanded(child: FilledButton(
                 onPressed: (){
-                  Navigator.popUntil(context, (route) => route.isFirst);
+                  Navigator.popUntil(context, (route) => route.isFirst,);
                 },
                 child: const Text('Về trang chủ'),
               )),

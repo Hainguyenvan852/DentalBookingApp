@@ -17,7 +17,7 @@ class AuthRepository {
     required String address,
     required String fullName,
     required String password,
-    required String dob,
+    required DateTime dob,
     required String phone,
   }) async {
     final cred = await _auth.createUserWithEmailAndPassword(
@@ -45,8 +45,6 @@ class AuthRepository {
       log('Create user doc failed: $e', stackTrace: st);
       rethrow;
     }
-
-
   }
 
   Future<void> signOut() => _auth.signOut();

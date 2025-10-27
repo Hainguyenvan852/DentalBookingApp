@@ -1,6 +1,6 @@
 import 'package:dental_booking_app/view/main_ui/booking_page/booking_page.dart';
-import 'package:dental_booking_app/view/model/service_model.dart';
-import 'package:dental_booking_app/view/repository/service_repository.dart';
+import 'package:dental_booking_app/data/model/service_model.dart';
+import 'package:dental_booking_app/data/repository/service_repository.dart';
 import 'package:flutter/material.dart';
 
 import '../../../service/authentication_repository.dart';

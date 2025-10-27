@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dental_booking_app/view/model/clinic_model.dart';
+
+import '../model/clinic_model.dart';
 
 class ClinicRepository{
 
@@ -14,7 +15,6 @@ class ClinicRepository{
         fromFirestore: (snap, _) => Clinic.fromSnapshot(snap),
         toFirestore: (clinic, _) => clinic.toMap()
     );
-
   }
 
   Future<List<Clinic>> getAll() async {
@@ -24,11 +24,11 @@ class ClinicRepository{
     return snapshot.docs.map((docs) => docs.data()).toList();
   }
 
-  Future<Clinic?> get(String clinicId) async {
+  Future<Clinic?> getById(String clinicId) async {
     final doc = await _clinicRef
         .doc(clinicId)
         .get();
-
+    if (!doc.exists) throw StateError('Clinic not found');
     return doc.data();
   }
 }

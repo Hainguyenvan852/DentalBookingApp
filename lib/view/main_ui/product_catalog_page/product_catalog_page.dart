@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:dental_booking_app/view/main_ui/product_catalog_page/details_product.dart';
-import 'package:dental_booking_app/view/model/category_model.dart';
-import 'package:dental_booking_app/view/repository/catalog_repository.dart';
-import 'package:dental_booking_app/view/repository/product_repository.dart';
+import 'package:dental_booking_app/data/model/category_model.dart';
+import 'package:dental_booking_app/data/repository/catalog_repository.dart';
+import 'package:dental_booking_app/data/repository/product_repository.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../model/product_model.dart';
+import '../../../data/model/product_model.dart';
+
 
 
 class ProductCatalogPage extends StatefulWidget {

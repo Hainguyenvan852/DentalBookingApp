@@ -1,7 +1,15 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'booking_cubit.dart';
+import '../../../logic/appointment_cubit.dart';
+import '../../../logic/booking_draft_cubit.dart';
+import '../../../logic/branch_cubit.dart';
+import '../../../logic/clinic_config_cubit.dart';
+import '../../../logic/date_cubit.dart';
+import '../../../logic/dentist_cubit.dart';
+import '../../../logic/note_cubit.dart';
+import '../../../logic/service_cubit.dart';
+import '../../../logic/slot_cubit.dart';
 
 class BookingWiringExample {
   final BranchCubit branchCubit;
@@ -18,7 +26,7 @@ class BookingWiringExample {
 
   late final StreamSubscription _branchSub;
   late final StreamSubscription _dateSub;
-  late final StreamSubscription _apptSub;
+  late final StreamSubscription _apmSub;
   late final StreamSubscription _serviceSub;
   late final StreamSubscription _dentistSub;
   late final StreamSubscription _slotSub;
@@ -55,7 +63,6 @@ class BookingWiringExample {
       }
     });
 
-
 // 2) When date changes → (re)listen appointments for clinic/day; reset slot in draft
     _dateSub = dateCubit.stream.listen((dState){
       final c = branchCubit.state.selected;
@@ -67,7 +74,7 @@ class BookingWiringExample {
 
 
 // 3) When appointments or clinic config changes → recompute slot statuses
-    _apptSub = appointmentCubit.stream.listen((aState){
+    _apmSub = appointmentCubit.stream.listen((aState){
       _recomputeSlots();
     });
     clinicCfgCubit.stream.listen((_) => _recomputeSlots());
@@ -113,10 +120,9 @@ class BookingWiringExample {
     timeSlotCubit.recompute(date: d, config: cfg, clinicAppointments: clinicApm, service: srv, userAppointments: userApm);
   }
 
-
   Future<void> dispose() async {
     await _branchSub.cancel();
     await _dateSub.cancel();
-    await _apptSub.cancel();
+    await _apmSub.cancel();
   }
 }

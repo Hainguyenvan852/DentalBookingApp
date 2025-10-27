@@ -1,3 +1,7 @@
+import 'package:dental_booking_app/view/main_ui/service_page/general_examination_page.dart';
+import 'package:dental_booking_app/view/main_ui/service_page/implant_page.dart';
+import 'package:dental_booking_app/view/main_ui/service_page/orthodontics_page.dart';
+import 'package:dental_booking_app/view/main_ui/service_page/porcelain_teeth_page.dart';
 import 'package:flutter/material.dart';
 
 class ServicesBox extends StatelessWidget {
@@ -21,10 +25,18 @@ class ServicesBox extends StatelessWidget {
             elevation: 5,
             child: Column(
               children: [
-                ServiceField(img: 'assets/images/implant.png', name: 'Implant', desscription: 'Phục hình răng hàm'),
-                ServiceField(img: 'assets/images/niengrang.png', name: 'Chỉnh nha', desscription: 'Niềng răng phục hình'),
-                ServiceField(img: 'assets/images/phuchinh.png', name: 'Phục hình', desscription: 'Bọc răng sứ thẩm mỹ'),
-                ServiceField(img: 'assets/images/khamtongquat.png', name: 'Tổng quát', desscription: 'Tư vấn và khám tổng quát'),
+                ServiceField(img: 'assets/images/implant.png', name: 'Implant', desscription: 'Phục hình răng hàm', onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> ImplantServicePage()));
+                },),
+                ServiceField(img: 'assets/images/niengrang.png', name: 'Chỉnh nha', desscription: 'Niềng răng phục hình', onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> OrthodonticsPage()));
+                },),
+                ServiceField(img: 'assets/images/phuchinh.png', name: 'Phục hình', desscription: 'Bọc răng sứ thẩm mỹ', onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> PorcelainTeethPage()));
+                },),
+                ServiceField(img: 'assets/images/khamtongquat.png', name: 'Tổng quát', desscription: 'Tư vấn và khám tổng quát', onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> GeneralExamPage()));
+                },),
               ],
             ),
           )
@@ -37,8 +49,9 @@ class ServicesBox extends StatelessWidget {
 class ServiceField extends StatelessWidget {
 
   final String img, name, desscription;
+  final VoidCallback onPressed;
 
-  const ServiceField({super.key, required this.img, required this.name, required this.desscription});
+  const ServiceField({super.key, required this.img, required this.name, required this.desscription, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +81,7 @@ class ServiceField extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(child: IconButton(onPressed: () {}, icon: Icon(Icons.keyboard_arrow_right)))
+          Expanded(child: IconButton(onPressed: ()=> onPressed(), icon: Icon(Icons.keyboard_arrow_right)))
         ],
       ),
     );

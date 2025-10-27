@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../model/product_model.dart';
+import '../../../data/model/product_model.dart';
+
 
 class DetailsProduct extends StatelessWidget {
   const DetailsProduct({super.key, required this.product});

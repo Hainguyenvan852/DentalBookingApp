@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../model/clinic_model.dart';
-import '../booking_bloc/booking_cubit.dart';
+import '../../../../data/model/clinic_model.dart';
+import '../../../../logic/slot_cubit.dart';
 
 class TimeSlotSelections extends StatefulWidget {
   const TimeSlotSelections({super.key});

@@ -168,7 +168,8 @@ class SignUpPageState extends State<SignUpPage> {
                     height: 60,
                     child: ElevatedButton(
                         onPressed: !_canSubmit ? null : () async{
-                          context.read<AuthCubit>().signUp(_emailCtrl.text.trim(),  _passwordCtrl.text.trim(),  _nameCtrl.text.trim(),  _phoneCtrl.text.trim(), _dateCtrl.text.trim(),  _addressCtrl.text.trim(), );
+                          final dateDetail = _dateCtrl.text.trim().split('/');
+                          context.read<AuthCubit>().signUp(_emailCtrl.text.trim(),  _passwordCtrl.text.trim(),  _nameCtrl.text.trim(),  _phoneCtrl.text.trim(), DateTime(int.parse(dateDetail[0]), int.parse(dateDetail[1]), int.parse(dateDetail[2])),  _addressCtrl.text.trim(), );
                         },
                         style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),

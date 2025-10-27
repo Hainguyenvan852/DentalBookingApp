@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../booking_page/booking_page.dart';
+import '../../gallery_page/gallery_page.dart';
 
 class FeatureButtons extends StatelessWidget {
-  const FeatureButtons({super.key});
-
-
+  const FeatureButtons({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class FeatureButtons extends StatelessWidget {
           Column(
             children: [
               IconButton(
-                onPressed: (){
+                onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => BookingPage(initService: null,)));
                 },
                 icon: SvgPicture.asset('assets/icons/calendar.svg', width: 20,),
@@ -61,25 +60,9 @@ class FeatureButtons extends StatelessWidget {
           Column(
             children: [
               IconButton(
-                onPressed: (){},
-                icon: SvgPicture.asset('assets/icons/shield.svg'),
-                style: IconButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)
-                    ),
-                    backgroundColor: Colors.lightBlue[50]
-                ),
-              ),
-              Text('Quá trình\nđiều trị',
-                style: TextStyle(fontSize: 13),
-                textAlign: TextAlign.center,
-              )
-            ],
-          ),
-          Column(
-            children: [
-              IconButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => GalleryPage()));
+                },
                 icon: SvgPicture.asset('assets/icons/picture.svg', width: 20,),
                 style: IconButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -125,6 +108,24 @@ class FeatureButtons extends StatelessWidget {
                 ),
               ),
               Text('Danh mục\ndịch vụ',
+                style: TextStyle(fontSize: 13),
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
+          Column(
+            children: [
+              IconButton(
+                onPressed: (){},
+                icon: Icon(Icons.message, color: Colors.blue,),
+                style: IconButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)
+                    ),
+                    backgroundColor: Colors.lightBlue[50]
+                ),
+              ),
+              Text('Liên hệ',
                 style: TextStyle(fontSize: 13),
                 textAlign: TextAlign.center,
               )
