@@ -41,9 +41,9 @@ class AppointmentDetailRepository {
           .timeout(const Duration(seconds: 20))
           .catchError((_) {});
 
-      final f2 = (apm.dentistId != null && apm.dentistId!.isNotEmpty)
+      final f2 = (apm.dentistId.isNotEmpty)
           ? dentistRepo
-          .getById(apm.dentistId!, apm.clinicId)
+          .getById(apm.dentistId, apm.clinicId)
           .then((v) => dentist = v)
           .timeout(const Duration(seconds: 20))
           .catchError((_) {})
@@ -94,4 +94,10 @@ class AppointmentDetailRepository {
       service: service,
     );
   }
+
+  Future<String> updateAppointment(Appointment appointment) async{
+    final result = await appointmentRepo.update(appointment);
+    return result;
+  }
+
 }

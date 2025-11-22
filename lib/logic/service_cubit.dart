@@ -24,7 +24,6 @@ class ServiceCubit extends Cubit<ServiceState> {
     try {
       final list = await repo.getAll();
 
-
       emit(ServiceState(services: list, selected: s, loading: false));
     } catch (e) {
       emit(ServiceState(services: const [], selected: null, loading: false, error: e));

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dental_booking_app/data/model/appointment_model.dart';
 import 'package:dental_booking_app/data/repository/appointment_detail_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,7 +13,7 @@ class AppointmentDetailState{
 
   AppointmentDetailState copyWith({AppointmentDetail? apmDetails, bool? loading, Object? error}){
     return AppointmentDetailState(
-      detail: apmDetails ?? this.detail,
+      detail: apmDetails ?? detail,
       loading: loading ?? this.loading,
       error: error ?? this.error
     );
@@ -28,16 +29,39 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailState>{
     emit(state.copyWith(loading: true));
 
     try{
-      final list = await repo.getById(apmId);
-      emit(state.copyWith(apmDetails: list, loading: false));
+      final detail = await repo.getById(apmId);
+      emit(state.copyWith(apmDetails: detail, loading: false));
     } catch(e){
       emit(state.copyWith(error: e));
     }
   }
 
-  Future<void> refresh() async {
-    final id = state.detail?.appointment.id;
-    if (id != null) await loadDetail(id);
+  Future<void> cancel(Appointment appointment) async {
+    emit(state.copyWith(loading: true));
+
+    final result = await repo.updateAppointment(appointment);
+
+    if(result == 'success'){
+      final detail = await repo.getById(appointment.id);
+      emit(state.copyWith(apmDetails: detail, loading: false));
+    }
+    else{
+      emit(state.copyWith(error: result));
+    }
+
   }
 
+  Future<void> updateAppointment(Appointment appointment) async {
+    emit(state.copyWith(loading: true));
+
+    final result = await repo.updateAppointment(appointment);
+
+    if(result == 'success'){
+      final detail = await repo.getById(appointment.id);
+      emit(state.copyWith(apmDetails: detail, loading: false));
+    }
+    else{
+      emit(state.copyWith(error: result));
+    }
+  }
 }

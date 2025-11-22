@@ -6,10 +6,10 @@ import '../data/model/clinic_model.dart';
 import '../data/model/service_model.dart';
 
 class TimeSlotState {
-  final List<TimeSlot> slots; // absolute slots for selected date
-  final Map<String, SlotStatus> statusBySlotId; // id -> status
+  final List<TimeSlot> slots;
+  final Map<String, SlotStatus> statusBySlotId;
   TimeSlot? selected;
-  final bool ready; // true when config + date available
+  final bool ready;
   TimeSlotState({
     required this.slots,
     required this.statusBySlotId,
@@ -17,7 +17,7 @@ class TimeSlotState {
     required this.selected
   });
   TimeSlotState copyWith({List<TimeSlot>? slots, TimeSlot? selected, Map<String, SlotStatus>? statusBySlotId, bool? ready}) =>
-      TimeSlotState(selected: selected ?? this.selected, slots: slots ?? this.slots, statusBySlotId: statusBySlotId ?? this.statusBySlotId, ready: ready ?? this.ready,);
+      TimeSlotState(selected: selected, slots: slots ?? this.slots, statusBySlotId: statusBySlotId ?? this.statusBySlotId, ready: ready ?? this.ready,);
 }
 
 
@@ -43,7 +43,7 @@ class TimeSlotCubit extends Cubit<TimeSlotState> {
     }
 
     final slots = _materializeSlotsForDate(config, date);
-    final Map<String, int> counts = { for (final s in slots) s.id: 0 };
+    final Map<String, int> counts = { for (final s in slots) s.id: 0};
 
     // Đếm số lượng appointment theo chi nhánh trong từng slot
     for (final apm in clinicAppointments) {
@@ -67,8 +67,10 @@ class TimeSlotCubit extends Cubit<TimeSlotState> {
 
       if (cap <= 0) {
         statuses[s.id] = SlotStatus.closed;
+      } else if (s.startAt.isBefore(DateTime.now())) {
+        statuses[s.id] = SlotStatus.overtime;
       } else if (userHasBooked) {
-        statuses[s.id] = SlotStatus.userBooked; // 🔥 đánh dấu slot đã đặt
+        statuses[s.id] = SlotStatus.userBooked;
       } else if (c >= cap) {
         statuses[s.id] = SlotStatus.crowded;
       } else if (c == 0) {
@@ -87,7 +89,7 @@ class TimeSlotCubit extends Cubit<TimeSlotState> {
   }
 
 
-  void select(TimeSlot s) => emit(state.copyWith(selected: s));
+  void select(TimeSlot? s) => emit(state.copyWith(selected: s));
 }
 
 List<TimeSlot> _materializeSlotsForDate(SlotConfig cfg, DateTime date){

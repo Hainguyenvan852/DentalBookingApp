@@ -19,7 +19,7 @@ class AppointmentRepository{
    Future<List<Appointment>> getAll(String userId) async{
      final snapshot = await _apmRef
          .where('patientId', isEqualTo: userId.trim())
-         .where('status', whereIn: ['confirmed', 'completed', 'pending'])
+         .where('status', whereIn: ['confirmed', 'completed', 'pending', 'canceled_by_patient', 'canceled_by_clinic'])
          .orderBy('startAt', descending: true)
          .get();
 
@@ -115,9 +115,11 @@ class AppointmentRepository{
        startAt: (m['startAt'] as Timestamp).toDate(),
        endAt: (m['endAt'] as Timestamp).toDate(),
        status: m['status'] as String,
-       notes: (m['notes'] as String?) ?? '',
+       ratingNote: (m['notes'] as String?) ?? '',
        rating: m['rating'] as int,
        ratedContent: m['ratedContent'] as String,
+       canceledAt: m['canceledAt'] as DateTime?,
+       cancelReason: m['cancelReason'] as String?,
      );
    }
 

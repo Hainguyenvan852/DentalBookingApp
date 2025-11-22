@@ -31,7 +31,7 @@ class MyAppointmentCubit extends Cubit<MyAppointmentState>{
       final list = await repo.getAll();
       emit(state.copyWith(apmDetails: list, loading: false));
     } catch(e){
-      emit(state.copyWith(error: e));
+      emit(state.copyWith(error: e, loading: false));
     }
   }
 

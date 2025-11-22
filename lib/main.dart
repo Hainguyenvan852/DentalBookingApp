@@ -1,5 +1,5 @@
 import 'package:dental_booking_app/service/authentication_repository.dart';
-import 'package:dental_booking_app/view/sign_in/bloc/auth_cubit.dart';
+import 'package:dental_booking_app/view/user_screen/sign_in_page/bloc/auth_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,10 +21,14 @@ Future<void> main() async {
       providers: [
         RepositoryProvider.value(value: authRepo),
       ],
-      child: BlocProvider(
-        create: (_) => AuthCubit(authRepo),
-        child: MyApp(),
-      ),
+      child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => AuthCubit(authRepo),
+            )
+          ],
+          child: MyApp()
+      )
     ),
   );
 }

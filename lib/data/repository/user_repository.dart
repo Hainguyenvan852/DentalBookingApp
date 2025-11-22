@@ -8,16 +8,16 @@ class UserRepository{
     _db = FirebaseFirestore.instance;
     usersRef = _db
       .collection('users')
-      .withConverter<User>(
-        fromFirestore: (snap, _) => User.fromMap(snap.data()!),
+      .withConverter<UserModel>(
+        fromFirestore: (snap, _) => UserModel.fromMap(snap.data()!),
         toFirestore: (user, _) => user.toMap(),
       );
   }
 
   late final FirebaseFirestore _db;
-  late final CollectionReference<User> usersRef;
+  late final CollectionReference<UserModel> usersRef;
 
-  Future<User?> getUser(String userId) async{
+  Future<UserModel?> getUser(String userId) async{
     final doc = await usersRef
         .doc(userId)
         .get();
@@ -25,11 +25,17 @@ class UserRepository{
     return doc.data();
   }
 
-  Future<void> createUser(User user) async{
+  Future<void> createUser(UserModel user) async{
     await usersRef.doc(user.uid).set(user);
   }
 
-  Future<void> updateUser(User user) async {
-    await usersRef.doc(user.uid).update(user.toMap());
+  Future<String> update(UserModel user) async {
+    try{
+      await usersRef.doc(user.uid).update(user.toMap());
+      return 'success';
+
+    } catch(e){
+      return e.toString();
+    }
   }
 }

@@ -12,33 +12,27 @@ class NotificationRepository{
         .collection('users')
         .doc(_auth.currentUser!.uid)
         .collection('notifications')
-        .withConverter<Notification>(
-        fromFirestore: (snap,_) => Notification.fromSnapshot(snap),
+        .withConverter<NotificationModel>(
+        fromFirestore: (snap,_) => NotificationModel.fromSnapshot(snap),
         toFirestore: (apm,_) => apm.toMap()
     );
   }
 
   late final FirebaseFirestore _db;
-  late final CollectionReference<Notification> _apmRef;
+  late final CollectionReference<NotificationModel> _apmRef;
 
-  Future<List<Notification>> getAll() async{
-    final today = DateTime.now();
-    final day = today.subtract(Duration(days: 15));
+  Future<List<NotificationModel>> getAll() async{
 
     final snapshot = await _apmRef
-        .where('createdAt', isGreaterThanOrEqualTo: day)
         .orderBy('createdAt')
         .get();
 
     return snapshot.docs.map((docs) => docs.data()).toList();
   }
 
-  Future<List<Notification>> getReminderNotif() async{
-    final today = DateTime.now();
-    final day = today.subtract(Duration(days: 15));
+  Future<List<NotificationModel>> getReminderNotif() async{
 
     final snapshot = await _apmRef
-        .where('createdAt', isGreaterThanOrEqualTo: day)
         .where('type', isEqualTo: 'reminder')
         .orderBy('createdAt')
         .get();
@@ -46,7 +40,7 @@ class NotificationRepository{
     return snapshot.docs.map((docs) => docs.data()).toList();
   }
 
-  Future<List<Notification>> getOverviewNotif() async{
+  Future<List<NotificationModel>> getOverviewNotif() async{
     final today = DateTime.now();
     final day = today.subtract(Duration(days: 15));
 
@@ -59,7 +53,7 @@ class NotificationRepository{
     return snapshot.docs.map((docs) => docs.data()).toList();
   }
 
-  Future<List<Notification>> getPaymentNotif() async{
+  Future<List<NotificationModel>> getPaymentNotif() async{
     final today = DateTime.now();
     final day = today.subtract(Duration(days: 15));
 
@@ -72,11 +66,11 @@ class NotificationRepository{
     return snapshot.docs.map((docs) => docs.data()).toList();
   }
 
-  Future<void> add(Notification apm) async {
+  Future<void> add(NotificationModel apm) async {
     await _apmRef.add(apm);
   }
 
-  Future<void> update(Notification apm, String apmId) async {
-    await _apmRef.doc(apmId).update(apm.toMap());
+  Future<void> update(NotificationModel apm) async {
+    await _apmRef.doc(apm.id).update(apm.toMap());
   }
 }

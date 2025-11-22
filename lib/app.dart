@@ -1,8 +1,8 @@
-import 'package:dental_booking_app/view/main_ui/navigation_page.dart';
-import 'package:dental_booking_app/view/sign_in/bloc/auth_gate.dart';
-import 'package:dental_booking_app/view/sign_in/sign_in_page.dart';
-import 'package:dental_booking_app/view/sign_up/sign_up_page.dart';
-import 'package:dental_booking_app/view/sign_up/verify_email.dart';
+import 'package:dental_booking_app/view/user_screen/navigation_page.dart';
+import 'package:dental_booking_app/view/user_screen/sign_in_page/bloc/auth_gate.dart';
+import 'package:dental_booking_app/view/user_screen/sign_in_page/sign_in_screen.dart';
+import 'package:dental_booking_app/view/user_screen/sign_up_page/sign_up_screen.dart';
+import 'package:dental_booking_app/view/user_screen/sign_up_page/verify_email_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -17,7 +17,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: Colors.white
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 0,
+          centerTitle: true,
+        ),
+
       ),
       supportedLocales: const [
         Locale('en', 'US'),

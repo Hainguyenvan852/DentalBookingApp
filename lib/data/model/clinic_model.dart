@@ -70,5 +70,5 @@ class TimeSlot {
   TimeSlot({required this.id, required this.startAt, required this.endAt});
 }
 
-enum SlotStatus { crowded, normal, empty, closed, userBooked }
+enum SlotStatus { crowded, normal, empty, closed, userBooked, overtime,}
 
