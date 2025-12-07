@@ -19,10 +19,14 @@ class AuthNeedsEmailVerify extends AuthState {
   const AuthNeedsEmailVerify();
 }
 
-class AuthAuthenticated extends AuthState {
+class AuthAuthenticatedDoctor extends AuthState {
   final String uid;
-  final Map<String, dynamic>? profile;
-  const AuthAuthenticated(this.uid, this.profile);
+  const AuthAuthenticatedDoctor(this.uid);
+}
+
+class AuthAuthenticatedPatient extends AuthState {
+  final String uid;
+  const AuthAuthenticatedPatient(this.uid);
 }
 
 class AuthRequestSignUp extends AuthState{

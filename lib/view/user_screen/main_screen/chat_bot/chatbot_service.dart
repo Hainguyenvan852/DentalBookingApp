@@ -1,13 +1,13 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 class ChatbotService {
-
-  static const String _apiKey = "AIzaSyCM7yqTuqEgDPPj5YcycspkqIhdPSnvhR0";
 
   late final GenerativeModel _model;
   late ChatSession _chat;
 
   ChatbotService() {
+    final String _apiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
 
     // Đây là "linh hồn" của chatbot, quy định vai trò của nó.
     final systemInstruction = Content.system(
@@ -46,7 +46,7 @@ class ChatbotService {
       return botResponse;
 
     } catch (e) {
-      return "Đã xảy ra lỗi, vui lòng thử lại sau.";
+      return "Đã xảy ra lỗi, vui lòng thử lại sau. $e";
     }
   }
 }

@@ -200,7 +200,6 @@ class ProductTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final green = const Color(0xFF86B817);
 
     return Container(
       decoration: BoxDecoration(
@@ -223,7 +222,6 @@ class ProductTile extends StatelessWidget {
             ),
             const SizedBox(width: 12),
 
-            // thông tin
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +230,7 @@ class ProductTile extends StatelessWidget {
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      if ((product.price - product.price*product.discount/100) < product.price) ...[
+                      if ((product.salePrice) < product.price) ...[
                         Text(
                           '${product.price} đ',
                           style: const TextStyle(
@@ -243,13 +241,13 @@ class ProductTile extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                       ],
-                      Text('${(product.price - product.price*product.discount/100).toInt()} đ', style: const TextStyle(fontSize: 13, color: Colors.red, fontWeight: FontWeight.w700)),
+                      Text('${product.salePrice.toInt()} đ', style: const TextStyle(fontSize: 13, color: Colors.red, fontWeight: FontWeight.w700)),
                       const SizedBox(width: 8),
-                      if (product.discount > 0)
+                      if (product.price - product.salePrice > 0)
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(color: const Color(0xFFFFEEF0), borderRadius: BorderRadius.circular(8)),
-                          child: Text('-${product.discount}%', style: const TextStyle(color: Colors.red, fontSize: 10, fontWeight: FontWeight.w700)),
+                          child: Text('-${((1-product.salePrice/product.price)*100).toInt().round()}%', style: const TextStyle(color: Colors.red, fontSize: 10, fontWeight: FontWeight.w700)),
                         ),
                     ],
                   ),

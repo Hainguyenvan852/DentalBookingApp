@@ -5,23 +5,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 class InvoiceRepository{
 
   late final FirebaseFirestore _db;
-  late final CollectionReference<Invoice> _paymentRef;
+  late final CollectionReference<Invoice> _invoiceRef;
   late final FirebaseAuth _auth;
 
   InvoiceRepository(){
     _db = FirebaseFirestore.instance;
     _auth = FirebaseAuth.instance;
 
-    _paymentRef = _db
+    _invoiceRef = _db
         .collection('invoices')
         .withConverter(
         fromFirestore: (snap, _) => Invoice.fromDoc(snap),
-        toFirestore: (payment, _) => payment.toMap()
+        toFirestore: (invoice, _) => invoice.toMap()
     );
   }
 
   Future<List<Invoice>> getAll(String patientId) async {
-    final snapshot = await _paymentRef
+    final snapshot = await _invoiceRef
         .where('patientId', isEqualTo: patientId)
         .orderBy('createdAt', descending: true)
         .get();
@@ -30,7 +30,7 @@ class InvoiceRepository{
   }
 
   Future<Invoice?> getById(String paymentId) async {
-    final docs = await _paymentRef
+    final docs = await _invoiceRef
         .doc(paymentId)
         .get();
 
@@ -39,10 +39,19 @@ class InvoiceRepository{
 
   Future<String> updateInvoice(Invoice i) async{
     try{
-      await _paymentRef.doc(i.id).update(i.toMap());
+      await _invoiceRef.doc(i.id).update(i.toMap());
       return 'success';
     } catch(e){
       return e.toString();
+    }
+  }
+
+  Future<String> createNewInvoice(Invoice i) async{
+    try{
+      final doc = await _invoiceRef.add(i);
+      return doc.id;
+    } catch(e){
+      return 'error';
     }
   }
 }

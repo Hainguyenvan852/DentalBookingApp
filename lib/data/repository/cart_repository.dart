@@ -36,9 +36,9 @@ class CartRepository{
     }
   }
 
-  Future<String> delete(CartProduct cp) async{
+  Future<String> delete(String id) async{
     try{
-      await _cartRef.doc(cp.id).delete();
+      await _cartRef.doc(id).delete();
       return 'success';
     } catch(e){
       return 'error: ${e.toString()}';
@@ -60,7 +60,7 @@ class CartRepository{
     }
 
       try{
-        final Map<String, dynamic> newCart = {
+        final Map<String, dynamic> newProduct = {
           'productId' : cp.productId,
           'nameProduct' : cp.nameProduct,
           'imageUrl' : cp.imageUrl,
@@ -71,9 +71,9 @@ class CartRepository{
         
         await _db
           .collection('users')
-          .doc('fjG3DhpLVtMKXE0eP27w0O3SbYB2')
+          .doc(_auth.currentUser!.uid)
           .collection('cart')
-          .add(newCart);
+          .add(newProduct);
 
         return 'success';
       } catch(e){
@@ -92,7 +92,7 @@ class CartRepository{
         
         await _db
           .collection('users')
-          .doc('fjG3DhpLVtMKXE0eP27w0O3SbYB2')
+          .doc(_auth.currentUser!.uid)
           .collection('cart')
           .add(newCart);
 

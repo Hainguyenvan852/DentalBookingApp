@@ -9,7 +9,7 @@ class UserRepository{
     usersRef = _db
       .collection('users')
       .withConverter<UserModel>(
-        fromFirestore: (snap, _) => UserModel.fromMap(snap.data()!),
+        fromFirestore: (snap, _) => UserModel.fromSnapshot(snap),
         toFirestore: (user, _) => user.toMap(),
       );
   }

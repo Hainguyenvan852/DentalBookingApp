@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Payment{
   final String id;
   final String userId;
-  final String invoiceId;
   final String method;
   final DateTime createdAt;
   final int amount;
@@ -15,7 +14,6 @@ class Payment{
     required this.createdAt,
     required this.amount,
     required this.userId,
-    required this.invoiceId,
     required this.description
   });
 
@@ -30,13 +28,11 @@ class Payment{
       amount: data['amount'] as int,
       description: data['description'] as String,
       userId: data['userId'],
-      invoiceId: data['invoiceId'],
     );
   }
 
   Map<String, dynamic> toMap() => {
     'userId': userId,
-    'invoiceId': invoiceId,
     'method': method,
     'createdAt': createdAt,
     'amount': amount,

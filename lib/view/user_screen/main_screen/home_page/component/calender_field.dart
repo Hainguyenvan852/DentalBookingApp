@@ -30,7 +30,7 @@ class _CalenderFieldState extends State<CalenderField> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.lightBlue[50],
-      height: 290,
+      height: 325,
       child: FutureBuilder(
           future: _appointmentRepo.getConfirmedAndCompleted(_auth.currentUser!.uid),
           builder: (context, snapshot){

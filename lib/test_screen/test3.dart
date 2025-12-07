@@ -1,21 +1,36 @@
+import 'package:dental_booking_app/firebase_options.dart';
+import 'package:dental_booking_app/data/repository/authentication_repository.dart';
+import 'package:dental_booking_app/view/user_screen/sign_in_page/bloc/auth_cubit.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_mail/open_mail.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(MaterialApp(
+    home: NewMailPicker(),
+  ));
+}
 
 
 class NewMailPicker extends StatelessWidget {
+  final authRepo = AuthRepository(); 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, size: 19,)),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () => _openMailApp(context),
-          child: Text('Open Mail App'),
+      body: RepositoryProvider(create: (_) => authRepo,
+        child: BlocProvider(create: (_) => AuthCubit(authRepo)..signOut(),
+          child: Center(
+          ),
         ),
-      ),
-    );
+      )
+      );
   }
 
   Future<void> _openMailApp(BuildContext context) async {

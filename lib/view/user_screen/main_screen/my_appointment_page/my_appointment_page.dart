@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:dental_booking_app/data/repository/appointment_detail_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../../../logic/appointment_detail_cubit.dart';
 import 'appointment_detail_screen.dart';
@@ -54,7 +55,10 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                 body: BlocBuilder<MyAppointmentCubit, MyAppointmentState>(
                     builder: (context, state){
                       if (state.loading == true){
-                        return Center(child: CircularProgressIndicator(color: Colors.blue,),);
+                        return Center(child: LoadingAnimationWidget.waveDots(
+                          color: Colors.blue,
+                          size: 35,
+                        ),);
                       }
                       if (state.error != null){
                         return Center(child: Text('Error ${state.error.toString()}'),);

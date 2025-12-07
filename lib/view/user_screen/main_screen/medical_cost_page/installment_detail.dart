@@ -270,7 +270,7 @@ Widget installmentCard({required BuildContext context, required Invoice invoice}
 
     if (ok == true) {
       final invoiceId = invoice.id;
-      context.read<InvoiceCubit>().reload(invoiceId);
+      context.read<InvoiceCubit>().reload(invoiceId!);
       context.read<InstallmentScheduleCubit>().loadAll(invoiceId);
     }
   }

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Invoice{
-  final String id;
+  final String? id;
   final String patientId;
   final String? paymentId;
   final String paymentType;
@@ -29,6 +29,35 @@ class Invoice{
     required this.lineItems
   });
 
+  Invoice copyWith({
+    String? id,
+    String? status,
+    int? amountPaid,
+    int? balance,
+    String? invoiceType,
+    DateTime? createdAt,
+    int? totalAmount,
+    String? patientId,
+    String? paymentId,
+    String? paymentType,
+    String? description,
+    List<dynamic>? lineItems}){
+    return Invoice(
+      id: id ?? this.id,
+      status: status ?? this.status,
+      amountPaid: amountPaid ?? this.amountPaid,
+      balance: balance ?? this.balance,
+      invoiceType: invoiceType ?? this.invoiceType,
+      createdAt: createdAt ?? this.createdAt,
+      totalAmount: totalAmount ?? this.totalAmount,
+      patientId: patientId ?? this.patientId,
+      paymentId: paymentId ?? this.paymentId,
+      paymentType: paymentType ?? this.paymentType,
+      description: description ?? this.description,
+      lineItems: lineItems ?? this.lineItems
+    );
+  }
+
   factory Invoice.fromDoc(DocumentSnapshot snap) {
     final data = snap.data() as Map<String, dynamic>;
     final ts = data['createdAt'] as Timestamp;
@@ -53,6 +82,7 @@ class Invoice{
     'patientId': patientId,
     'paymentType': paymentType,
     'invoiceType': invoiceType,
+    'paymentId': paymentId,
     'createdAt': createdAt,
     'totalAmount': totalAmount,
     'description': description,

@@ -20,7 +20,7 @@ class BookingDraftState {
           service: service ?? this.service,
           dentist: dentist ?? this.dentist,
           date: date ?? this.date,
-          slot: slot,
+          slot: slot ?? this.slot,
           notes: notes ?? this.notes,
           submitting: submitting ?? this.submitting
       );

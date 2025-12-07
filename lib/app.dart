@@ -1,3 +1,4 @@
+import 'package:dental_booking_app/view/doctor_screen/screens/admin_dashboard.dart';
 import 'package:dental_booking_app/view/user_screen/navigation_page.dart';
 import 'package:dental_booking_app/view/user_screen/sign_in_page/bloc/auth_gate.dart';
 import 'package:dental_booking_app/view/user_screen/sign_in_page/sign_in_screen.dart';
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: Colors.white,
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: const Color(0xFFF5F7FA),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
@@ -39,8 +41,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/signin' : (_) => const SignInPage(),
         '/signup' : (_) => const SignUpPage(),
-        '/home' : (_) => const NavigationPage(),
-        '/verify' : (_) => const VerifyEmailPage()
+        '/patient_home' : (_) => const NavigationPage(),
+        '/verify' : (_) => const VerifyEmailPage(),
+        '/admin_home': (_) => const DashboardScreen()
       },
     );
   }

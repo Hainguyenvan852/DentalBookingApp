@@ -1,4 +1,5 @@
 import 'package:dental_booking_app/logic/user_cubit.dart';
+import 'package:dental_booking_app/view/user_screen/main_screen/chat_bot/chatbot_screen.dart';
 import 'package:dental_booking_app/view/user_screen/main_screen/gallery_page/gallery_screen.dart';
 import 'package:dental_booking_app/view/user_screen/main_screen/medical_cost_page/payment_history_screen.dart';
 import 'package:dental_booking_app/view/user_screen/main_screen/personal_page/profile_screen.dart';
@@ -80,7 +81,7 @@ class _PersonalPageState extends State<PersonalPage> {
                 FeatureBox(featureName: 'Ảnh Điều Trị', featureIcon: Icons.image_outlined,
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const GalleryPage())),
                 ),
-                FeatureBox(featureName: 'Hồ Sơ Bệnh Án', featureIcon: Icons.file_copy_outlined, onPressed: (){},
+                FeatureBox(featureName: 'Nhân viên tư vấn Chatbot', featureIcon: Icons.file_copy_outlined, onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen())),
                 ),
                 FeatureBox(featureName: 'Liên Hệ Và Trợ Giúp', featureIcon: Icons.help_outline,
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HelpAndSupportScreen())),

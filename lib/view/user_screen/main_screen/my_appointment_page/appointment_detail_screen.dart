@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../../data/model/appointment_model.dart';
 import 'blinking_box.dart';
@@ -28,7 +29,10 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage> {
     return BlocBuilder<AppointmentDetailCubit, AppointmentDetailState>(
         builder: (context, state){
           if (state.loading == true){
-            return Scaffold(body: Center(child: CircularProgressIndicator(color: Colors.blue,),));
+            return Scaffold(body: Center(child: LoadingAnimationWidget.waveDots(
+              color: Colors.blue,
+              size: 35,
+            )));
           }
 
           if (state.error != null){

@@ -206,7 +206,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Đơn hàng #DH${order.id.substring(0, 5)}',
+                  'Đơn hàng #${order.id.substring(0, 7)}',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

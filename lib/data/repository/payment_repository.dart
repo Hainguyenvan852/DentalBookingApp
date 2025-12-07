@@ -36,4 +36,13 @@ class PaymentRepository{
 
     return docs.data();
   }
+
+  Future<String> createNewPayment(Payment p) async{
+    try{
+      final result = await _paymentRef.add(p);
+      return result.id;
+    } catch(e){
+      return 'error';
+    }
+  }
 }

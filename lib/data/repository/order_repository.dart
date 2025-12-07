@@ -27,17 +27,32 @@ class OrderRepository{
 
       for(var i in data){
         final invoice = await _invoiceRepository.getById(i['invoiceId']);
+        if(invoice == null) break;
 
         orders.add(OrderModel(
-          id: i['id'], 
-          invoice: invoice!, 
-          addressDelivery: i['addressDelivery'], 
-          phoneContact: i['phoneContact'], 
+          id: i['id'],
+          invoice: invoice,
+          addressDelivery: i['addressDelivery'],
+          phoneContact: i['phoneContact'],
           status: i['status'])
         );
       }
 
     return orders;
+  }
+
+  Future<String> createNewOrder(OrderModel order) async {
+    try{
+      await _db
+          .collection('users')
+          .doc(_auth.currentUser!.uid)
+          .collection('orders')
+          .add(toMap(order));
+
+      return 'success';
+    } catch (e){
+      return 'error: $e';
+    }
   }
 }
 

@@ -102,7 +102,6 @@ class BookingWiringExample {
     });
 
 // 6) When select slot → set slot in booking draft
-
     _slotSub = timeSlotCubit.stream.listen((tsState){
       final ts = tsState.selected;
 

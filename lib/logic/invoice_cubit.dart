@@ -64,7 +64,7 @@ class InvoiceCubit extends Cubit<InvoiceState>{
 
     final result = await _invoiceRepo.updateInvoice(invoice);
 
-    reload(invoice.id);
+    reload(invoice.id!);
 
     if(result == 'success'){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Đã cập nhật'), backgroundColor: Colors.blue.shade300,));

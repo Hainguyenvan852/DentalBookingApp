@@ -221,9 +221,7 @@ Future<void> submitBooking({
   final service = st.service!;
   final slot = st.slot!;
 
-
   final end = slot.startAt.add(Duration(minutes: service.durationMinutes));
-
 
   final req = AppointmentCreateRequest(
     clinicId: st.clinic!.id,

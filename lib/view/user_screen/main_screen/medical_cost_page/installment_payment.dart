@@ -249,7 +249,7 @@ class PayingItem extends StatelessWidget {
                         child: MultiBlocProvider(
                           providers: [
                             BlocProvider.value(value: context.read<InvoiceCubit>()..select(invoice)),
-                            BlocProvider.value(value: context.read<InstallmentScheduleCubit>()..loadAll(invoice.id)),
+                            BlocProvider.value(value: context.read<InstallmentScheduleCubit>()..loadAll(invoice.id!)),
                           ],
                           child: InstallmentDetail(invoice: invoice,)
                         ),

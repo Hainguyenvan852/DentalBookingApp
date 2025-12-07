@@ -91,7 +91,7 @@ class OrderDetailScreen extends StatelessWidget {
                       children: [
                         _buildRowInfo(
                           'Mã đơn hàng',
-                          order.id.substring(0, 5),
+                          order.id.substring(0, 7),
                           isCopyable: true,
                         ),
                         const SizedBox(height: 12),

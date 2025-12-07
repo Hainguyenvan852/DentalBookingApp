@@ -3,7 +3,7 @@ import 'package:dental_booking_app/data/model/service_model.dart';
 import 'package:dental_booking_app/data/repository/service_repository.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../service/authentication_repository.dart';
+import '../../../../data/repository/authentication_repository.dart';
 
 class ServicePage extends StatelessWidget {
   ServicePage({super.key});

@@ -136,6 +136,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     const BannerAdvantage(),
                     FeatureButtons(),
+                    const SizedBox(height: 20,),
                     CalenderField(),
                     const ServicesBox(),
                   ],

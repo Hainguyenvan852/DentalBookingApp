@@ -221,7 +221,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                 const Spacer(),
                 TextButton(
                   onPressed: () async{
-                    final result = await cartRepo.delete(product);
+                    final result = await cartRepo.delete(product.id);
                       if(result != 'success'){
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(result))

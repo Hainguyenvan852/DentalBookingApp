@@ -5,7 +5,7 @@ class Product {
   final String name;
   final int price;
   final int amount;
-  final int discount; // %
+  final int salePrice;
   final String imageUrl;
   final String description;
 
@@ -13,7 +13,7 @@ class Product {
     required this.id,
     required this.name,
     required this.price,
-    required this.discount,
+    required this.salePrice,
     required this.amount,
     required this.imageUrl,
     required this.description
@@ -22,7 +22,7 @@ class Product {
   Map<String, dynamic> toMap() => {
     'name': name,
     'price': price,
-    'discount': discount,
+    'salePrice': salePrice,
     'amount': amount,
     'imageUrl' : imageUrl,
     'description' : description,
@@ -35,7 +35,7 @@ class Product {
       id: snap.id,
       name: data['name'] as String,
       price: data['price'] as int,
-      discount: data['discount'] as int,
+      salePrice: data['salePrice'] as int,
       amount: data['amount'] as int,
       imageUrl : data['imageUrl'] as String,
       description : data['description'] as String,

@@ -1,1 +1,46 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"dental-booking-app-8934f","appId":"1:200817212131:android:3d1ab4ab28bd6ff31f63d6","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"dental-booking-app-8934f","configurations":{"android":"1:200817212131:android:3d1ab4ab28bd6ff31f63d6","ios":"1:200817212131:ios:41bee7f9d49a0c361f63d6"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "dental-booking-app-8934f",
+          "appId": "1:200817212131:android:3d1ab4ab28bd6ff31f63d6",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "dental-booking-app-8934f",
+          "configurations": {
+            "android": "1:200817212131:android:3d1ab4ab28bd6ff31f63d6",
+            "ios": "1:200817212131:ios:41bee7f9d49a0c361f63d6"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "disallowLegacyRuntimeConfig": true,
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ],
+  "emulators": {
+    "functions": {
+      "port": 5001,
+      "host": "0.0.0.0"
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  }
+}

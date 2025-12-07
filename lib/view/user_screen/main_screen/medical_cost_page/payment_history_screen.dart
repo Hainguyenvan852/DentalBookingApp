@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../../data/model/payment_model.dart';
 import '../../../../data/repository/payment_repository.dart';
@@ -14,6 +16,7 @@ class PaymentHistoryPage extends StatefulWidget {
 
 class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
   late final PaymentRepository _paymentRepo;
+  final _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -34,17 +37,18 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
       ),
       body: SafeArea(
           child: FutureBuilder(
-              future: _paymentRepo.getAll('fjG3DhpLVtMKXE0eP27w0O3SbYB2'),
+              future: _paymentRepo.getAll(_auth.currentUser!.uid),
               builder: (context, snap){
                 if(snap.connectionState == ConnectionState.waiting){
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return Center(child: LoadingAnimationWidget.waveDots(
+                    color: Colors.blue,
+                    size: 35,
+                  ),);
                 }
                 if(snap.hasError){
                   return Center(child: Text('Error: ${snap.error}'),);
                 }
-                if(snap.data == null){
+                if(snap.data == null || snap.data!.isEmpty){
                   return const Center(
                     child: Text('Bạn chưa có giao dịch nào'),
                   );

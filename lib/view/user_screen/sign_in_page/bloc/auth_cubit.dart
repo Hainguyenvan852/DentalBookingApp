@@ -1,17 +1,19 @@
 import 'dart:async';
+import 'package:dental_booking_app/data/repository/user_repository.dart';
 import 'package:dental_booking_app/view/user_screen/sign_in_page/bloc/auth_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../service/authentication_repository.dart';
+import '../../../../data/repository/authentication_repository.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final AuthRepository repo;
+  final AuthRepository authRepo;
+  final userRepo = UserRepository();
   StreamSubscription<User?>? _authSub;
   late FirebaseAuth _auth;
 
-  AuthCubit(this.repo) : super(const AuthUnknown()) {
+  AuthCubit(this.authRepo) : super(const AuthUnknown()) {
     _auth = FirebaseAuth.instance;
-    _authSub = repo.authState().listen((user) async {
+    _authSub = authRepo.authState().listen((user) async {
 
       if (user == null) {
         emit(const AuthUnauthenticated());
@@ -23,8 +25,29 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
-      final profile =  repo.loadProfile();
-      emit(AuthAuthenticated(user.uid, await profile));
+      final userDocs = await userRepo.getUser(user.uid);
+
+      if(userDocs != null){
+        if(userDocs.role == 'patient'){
+          if(userDocs.isActive){
+            emit(AuthAuthenticatedPatient(user.uid));
+          } else{
+            emit(AuthUnauthenticated('Tài khoản này đã bị vô hiệu hóa'));
+          }
+        }
+        else if(userDocs.role == 'staff_doctor'){
+          if(userDocs.isActive){
+            emit(AuthAuthenticatedDoctor(user.uid));
+          } else{
+            emit(AuthUnauthenticated('Tài khoản này đã bị vô hiệu hóa'));
+          }
+        }
+      }
+      else{
+        emit(AuthUnauthenticated('Đăng nhập thất bại'));
+      }
+
+      
     });
   }
 
@@ -59,7 +82,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> signIn(String email, String password) async {
     emit(const AuthLoading());
     try {
-      await repo.signIn(email, password);
+      await authRepo.signIn(email, password);
     } catch (e) {
       emit(AuthUnauthenticated(_friendly(e)));
     }
@@ -75,7 +98,7 @@ class AuthCubit extends Cubit<AuthState> {
       ) async {
     emit(const AuthLoading());
     try {
-      await repo.signUp(
+      await authRepo.signUp(
         email: email,
         password: password,
         fullName: fullName,
@@ -91,7 +114,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<String> sendReset(String email) async {
     try {
-      await repo.sendResetPassword(email);
+      await authRepo.sendResetPassword(email);
       return 'success';
     } catch (e) {
       return e.toString();
@@ -100,7 +123,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> signOut() async {
     emit(AuthLoading());
-    await repo.signOut();
+    await authRepo.signOut();
   }
 
   String _friendly(Object e) {

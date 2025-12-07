@@ -1,3 +1,5 @@
+import 'package:dental_booking_app/view/doctor_screen/screens/admin_dashboard.dart';
+import 'package:dental_booking_app/view/doctor_screen/screens/navigation_doctor_page.dart';
 import 'package:dental_booking_app/view/user_screen/sign_up_page/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +34,8 @@ class AuthGate extends StatelessWidget {
           if (state is AuthRequestSignUp) return SignUpPage();
           if (state is AuthUnauthenticated) return const SignInPage();
           if (state is AuthNeedsEmailVerify) return const VerifyEmailPage();
-          if (state is AuthAuthenticated) return const NavigationPage();
+          if (state is AuthAuthenticatedPatient) return const NavigationPage();
+          if (state is AuthAuthenticatedDoctor) return const NavigationAdminPage();
           return const SignInPage();
         },
     );
