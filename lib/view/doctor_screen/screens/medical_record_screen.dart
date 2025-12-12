@@ -42,7 +42,7 @@ class _MedicalRecordScreenState extends State<MedicalRecordScreen> {
             appBar: AppBar(
               backgroundColor: Colors.white,
               centerTitle: true,
-              title: Text('Lịch sử bệnh án', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+              title: Text('Lịch sử bệnh án', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
               leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.arrow_back),),
             ),
             body: Padding(

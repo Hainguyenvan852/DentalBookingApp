@@ -17,8 +17,7 @@ class DentistRepository{
         .where('type', isEqualTo: 'dentist')
         .get();
     return snap.docs.map((d){
-      final m = d.data();
-      return Dentist(id: d.id, name: m['name'] as String,);
+      return Dentist.fromSnapshot(d);
     }).toList();
   }
 
@@ -29,11 +28,6 @@ class DentistRepository{
         .doc(dentistId)
         .get();
 
-    final m = doc.data()!;
-
-    return Dentist(
-        id: doc.id,
-        name: m['name']
-    );
+    return Dentist.fromSnapshot(doc);
   }
 }

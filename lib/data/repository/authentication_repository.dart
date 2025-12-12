@@ -31,7 +31,6 @@ class AuthRepository {
 
     try{
       await _db.collection('users').doc(cred.user!.uid).set({
-        'uid': cred.user?.uid,
         'role': 'patient',
         'email': email,
         'fullName': fullName,
@@ -39,7 +38,8 @@ class AuthRepository {
         'address': address,
         'phone': phone,
         'createdAt': FieldValue.serverTimestamp(),
-        'isActive': true
+        'isActive': true,
+        'credibility': 100
       });
     }catch (e, st) {
       log('Create user doc failed: $e', stackTrace: st);
@@ -48,6 +48,33 @@ class AuthRepository {
   }
 
   Future<void> signOut() => _auth.signOut();
+
+  Future<void> updatePassword(String oldPassword, String newPassword) async {
+    User? user = _auth.currentUser;
+
+    if (user != null && user.email != null) {
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: oldPassword,
+      );
+
+      try {
+        await user.reauthenticateWithCredential(credential);
+
+        await user.updatePassword(newPassword);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'wrong-password') {
+          throw Exception('Mật khẩu cũ không chính xác.');
+        } else {
+          throw Exception(e.message);
+        }
+      }
+    } else {
+      throw Exception('Không tìm thấy người dùng hiện tại.');
+    }
+  }
+
+
 
   Future<void> sendResetPassword(String email) =>
       _auth.sendPasswordResetEmail(email: email);

@@ -16,11 +16,21 @@ class AppointmentRepository{
   late final FirebaseFirestore _db;
   late final CollectionReference<Appointment> _apmRef;
 
-   Future<List<Appointment>> getAll(String userId) async{
+   Future<List<Appointment>> getAllForUser(String userId) async{
      final snapshot = await _apmRef
          .where('patientId', isEqualTo: userId.trim())
          .where('status', whereIn: ['confirmed', 'completed', 'pending', 'canceled_by_patient', 'canceled_by_clinic'])
          .orderBy('startAt', descending: true)
+         .get();
+
+     return snapshot.docs.map((docs) => docs.data()).toList();
+   }
+
+   Future<List<Appointment>> getAllForDoctor(String doctorId) async{
+     final snapshot = await _apmRef
+         .where('dentistId', isEqualTo: doctorId.trim())
+         .where('status', whereIn: ['confirmed', 'completed', 'pending'])
+         .orderBy('startAt')
          .get();
 
      return snapshot.docs.map((docs) => docs.data()).toList();
@@ -40,7 +50,6 @@ class AppointmentRepository{
      final docs = await _apmRef
         .doc(apmId)
         .get();
-
      return docs.data();
    }
 
@@ -120,6 +129,7 @@ class AppointmentRepository{
        ratedContent: m['ratedContent'] as String,
        canceledAt: m['canceledAt'] as DateTime?,
        cancelReason: m['cancelReason'] as String?,
+       isBookingForAnother: m['isBookingForAnother'] as bool,
      );
    }
 
@@ -135,7 +145,8 @@ class AppointmentRepository{
        'notes': req.notes,
        'createdAt': FieldValue.serverTimestamp(),
        'rating' : 0,
-       'ratedContent': ''
+       'ratedContent': '',
+       'isBookingForAnother': req.isBookingForAnother
      });
    }
 

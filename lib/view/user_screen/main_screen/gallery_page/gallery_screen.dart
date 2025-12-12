@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,7 @@ class GalleryPage extends StatefulWidget {
 class _GalleryPageState extends State<GalleryPage> {
 
   late final GalleryRepository repo;
+  final _auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -35,13 +37,13 @@ class _GalleryPageState extends State<GalleryPage> {
     return RepositoryProvider(
       create: (context) => repo,
       child: BlocProvider(
-          create: (context) => GalleryCubit(repo: repo),
+          create: (context) => GalleryCubit(repo: repo, userId: _auth.currentUser!.uid),
           child: Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.white,
               centerTitle: true,
-              title: Text('Kho ảnh điều trị', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
-              leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, size: 19,)),
+              title: Text('Kho ảnh điều trị', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
+              leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.arrow_back),),
             ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -174,6 +176,10 @@ class PhotoViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.arrow_back, color: Colors.white,),),
+        backgroundColor: Colors.black,
+      ),
       backgroundColor: Colors.black,
       body: GestureDetector(
         onVerticalDragEnd: (_) => Navigator.pop(context),

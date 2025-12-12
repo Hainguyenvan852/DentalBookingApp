@@ -97,12 +97,12 @@ class SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () => context.read<AuthCubit>().requestSignIn(),
-            icon: Icon(Icons.arrow_back_ios_new, size: 20,)
+            icon: const Icon(Icons.arrow_back),
         ),
         toolbarHeight: 70,
         centerTitle: true,
         title: Text("Đăng ký",
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
         shape: RoundedRectangleBorder(
             side: BorderSide(width: 0.7, color: Colors.grey)),
       ),

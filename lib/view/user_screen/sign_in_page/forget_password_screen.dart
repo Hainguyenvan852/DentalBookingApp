@@ -23,7 +23,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios_new_outlined, size: 19,)),
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.arrow_back),),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),

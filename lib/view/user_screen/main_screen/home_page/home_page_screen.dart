@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
         leadingWidth: 300,
         leading: Container(
             padding: EdgeInsets.only(left: 8, top: 8),
-            height: 55,
+            height: 65,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                       final user = snapshot.data!;
 
                       return Text('Xin chào ${user.fullName}', style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 17,
                           fontWeight: FontWeight.w500
                       ),);
                     }
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                     if(appointments.isEmpty){
                       return Text('Hôm nay bạn không có lịch hẹn',
                           style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 14,
                               color: Colors.grey
                           )
                       );
@@ -99,13 +99,13 @@ class _HomePageState extends State<HomePage> {
                     else {
                       return Text('Hôm nay bạn có ${appointments.length} lịch hẹn',
                           style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 14,
                               color: Colors.grey
                           )
                       );
                     }
                   },
-                )
+                ),
               ],
             )
         ),
@@ -134,7 +134,9 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                 child: ListView(
                   children: [
+                    const SizedBox(height: 10,),
                     const BannerAdvantage(),
+                    const SizedBox(height: 10,),
                     FeatureButtons(),
                     const SizedBox(height: 20,),
                     CalenderField(),

@@ -43,7 +43,7 @@ class InvoiceCubit extends Cubit<InvoiceState>{
     emit(state.copyWith(loading: true));
 
     try{
-      final invoices = await _invoiceRepo.getAll('fjG3DhpLVtMKXE0eP27w0O3SbYB2');
+      final invoices = await _invoiceRepo.getAll();
       emit(state.copyWith(invoices: invoices, loading: false, reloading: false));
     }catch(e){
       emit(state.copyWith(error: e, loading: false, reloading: false));

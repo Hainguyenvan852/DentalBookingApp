@@ -20,9 +20,9 @@ class InvoiceRepository{
     );
   }
 
-  Future<List<Invoice>> getAll(String patientId) async {
+  Future<List<Invoice>> getAll() async {
     final snapshot = await _invoiceRef
-        .where('patientId', isEqualTo: patientId)
+        .where('patientId', isEqualTo: _auth.currentUser!.uid)
         .orderBy('createdAt', descending: true)
         .get();
 

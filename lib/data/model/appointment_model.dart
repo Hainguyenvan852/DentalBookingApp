@@ -14,10 +14,11 @@ class Appointment {
   final String ratedContent;
   final String? cancelReason;
   final DateTime? canceledAt;
+  final bool isBookingForAnother;
 
   Appointment({required this.ratedContent, required this.patientId,required this.clinicId,required this.serviceId,
     required this.dentistId,required this.ratingNote,required this.startAt,required this.endAt,required this.status,
-    required this.id, required this.rating, required this.canceledAt, required this.cancelReason
+    required this.id, required this.rating, required this.canceledAt, required this.cancelReason, required this.isBookingForAnother
   });
 
   Appointment copyWith({
@@ -32,7 +33,8 @@ class Appointment {
     int? rating,
     String? content,
     DateTime? canceledAt,
-    String? cancelReason
+    String? cancelReason,
+    bool? isBookingForAnother
   }){
     return Appointment(
         patientId: patientId ?? this.patientId,
@@ -47,7 +49,8 @@ class Appointment {
         rating: rating ?? this.rating,
         ratedContent: content ?? ratedContent,
         canceledAt: canceledAt ?? this.canceledAt,
-        cancelReason: cancelReason ?? this.cancelReason
+        cancelReason: cancelReason ?? this.cancelReason,
+        isBookingForAnother: isBookingForAnother ?? this.isBookingForAnother
     );
   }
   Map<String, dynamic> toMap() => {
@@ -62,7 +65,8 @@ class Appointment {
     'rating': rating,
     'ratedContent': ratedContent,
     'canceledAt': canceledAt,
-    'cancelReason': cancelReason
+    'cancelReason': cancelReason,
+    'isBookingForAnother': isBookingForAnother
   };
 
   factory Appointment.fromSnapshot(DocumentSnapshot snap) {
@@ -90,6 +94,7 @@ class Appointment {
       ratedContent: data['ratedContent'] as String,
       canceledAt: cancelAt,
       cancelReason: data['cancelReason'] as String?,
+      isBookingForAnother: data['isBookingForAnother'] as bool,
     );
   }
 }
@@ -102,6 +107,7 @@ class AppointmentCreateRequest {
   final DateTime startAt;
   final DateTime endAt;
   final String notes;
+  final bool isBookingForAnother;
   AppointmentCreateRequest({
     required this.clinicId,
     required this.dentistId,
@@ -110,6 +116,7 @@ class AppointmentCreateRequest {
     required this.startAt,
     required this.endAt,
     required this.notes,
+    required this.isBookingForAnother,
   });
 }
 

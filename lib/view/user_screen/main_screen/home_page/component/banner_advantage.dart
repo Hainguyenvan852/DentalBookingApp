@@ -52,7 +52,7 @@ class _BannerAdvantageState extends State<BannerAdvantage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: SizedBox(
-        height: 200,
+        height: 230,
         width: double.infinity,
         child: PageView.builder(
           physics: const NeverScrollableScrollPhysics(),

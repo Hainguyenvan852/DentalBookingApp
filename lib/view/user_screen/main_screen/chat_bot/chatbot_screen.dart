@@ -87,12 +87,12 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed:() => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, size: 19,)),      
+        leading: IconButton(onPressed:() => Navigator.pop(context), icon: const Icon(Icons.arrow_back),),
         title: Row(
           children: [
             Image.asset('assets/images/gpt-robot.png'),
             SizedBox(width: 10,),
-            const Text("Trợ lý DentalBooking", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.blue),)
+            const Text("Trợ lý DentalBooking", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.blue),)
           ],
         ),
         centerTitle: true,

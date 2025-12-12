@@ -19,7 +19,7 @@ void main() async{
   ));
 }
 
-enum OrderStatus { all, pending, shipping, delivered, cancelled }
+enum OrderStatus { all, pending, shipping, delivered, cancelled, confirmed}
 
 class OrderHistoryScreen extends StatefulWidget {
   const OrderHistoryScreen({super.key});
@@ -54,16 +54,19 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
       case OrderStatus.shipping: return 'Đang giao';
       case OrderStatus.delivered: return 'Đã giao';
       case OrderStatus.cancelled: return 'Đã hủy';
+      case OrderStatus.confirmed: return 'Đã xác nhận';
     }
   }
 
-  OrderStatus? _textToStatus(String status) {
+  OrderStatus _textToStatus(String status) {
     switch (status) {
       case 'all': return OrderStatus.all;
       case 'pending': return OrderStatus.pending;
       case 'shipping': return OrderStatus.shipping;
       case 'delivered': return OrderStatus.delivered;
-      case 'Đã hủy': return OrderStatus.cancelled;
+      case 'confirmed': return OrderStatus.confirmed;
+      case 'canceled': return OrderStatus.cancelled;
+      default: return OrderStatus.all;
     }
   }
 
@@ -73,6 +76,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
       case OrderStatus.shipping: return Colors.blue.shade100;
       case OrderStatus.delivered: return Colors.green.shade100;
       case OrderStatus.cancelled: return Colors.red.shade100;
+      case OrderStatus.confirmed: return Colors.green.shade100;
       default: return Colors.grey;
     }
   }
@@ -107,7 +111,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
         elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context), 
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 19,)
+          icon: const Icon(Icons.arrow_back),
         ),
         centerTitle: true,
         title: const Text(
@@ -217,14 +221,14 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: _getStatusColor(_textToStatus(order.status)!),
+                        color: _getStatusColor(_textToStatus(order.status)),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        _getStatusText(_textToStatus(order.status)!),
+                        _getStatusText(_textToStatus(order.status)),
                         style: TextStyle(
                           fontSize: 12,
-                          color: _getStatusTextColor(_textToStatus(order.status)!),
+                          color: _getStatusTextColor(_textToStatus(order.status)),
                           fontWeight: FontWeight.w500,
                         ),
                       ),

@@ -16,10 +16,9 @@ class OrderRepository{
 
   Future<List<OrderModel>> getAll() async {
     final snapshot = await _db
-      .collection('users')
-        .doc(_auth.currentUser!.uid)
-        .collection('orders')
-        .get();
+      .collection('orders')
+      .where('customerId', isEqualTo: _auth.currentUser!.uid)
+      .get();
 
       final data = snapshot.docs.map((docs) => fromSnapshot(docs)).toList();
       
@@ -34,10 +33,10 @@ class OrderRepository{
           invoice: invoice,
           addressDelivery: i['addressDelivery'],
           phoneContact: i['phoneContact'],
-          status: i['status'])
-        );
+          status: i['status'],
+          customerId: i['customerId']
+        ),);
       }
-
     return orders;
   }
 
@@ -63,7 +62,8 @@ Map<String, dynamic> fromSnapshot(DocumentSnapshot<Map<String, dynamic>> data) {
     "invoiceId": data['invoiceId'], 
     "addressDelivery": data['addressDelivery'], 
     "phoneContact": data['phoneContact'], 
-    "status": data['status']
+    "status": data['status'],
+    "customerId": data['customerId']
   };
 }
 
@@ -72,6 +72,7 @@ Map<String, dynamic> toMap(OrderModel order){
     'invoiceId': order.invoice.id,
     'addressDelivery' : order.addressDelivery,
     'phoneContact' : order.phoneContact,
-    'status' : order.status
+    'status' : order.status,
+    'customerId' : order.customerId
   };
 }

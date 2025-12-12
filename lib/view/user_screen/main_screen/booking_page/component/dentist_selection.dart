@@ -1,3 +1,4 @@
+import 'package:dental_booking_app/data/model/dentist_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,7 +51,7 @@ class _DentistSelectionState extends State<DentistSelection> {
                         final d = st.dentists[index];
                         final selected = d.id == _selectedId;
 
-                        return DoctorComponent(name: d.name, selected: selected, onTap: () {_selectChange(d.id); context.read<DentistCubit>().select(d);},);
+                        return DoctorComponent(dentist: d, selected: selected, onTap: () {_selectChange(d.id); context.read<DentistCubit>().select(d);},);
                       },
                       separatorBuilder: (BuildContext context, int index) {
                         return SizedBox(width: 10);
@@ -69,8 +70,8 @@ class _DentistSelectionState extends State<DentistSelection> {
 
 
 class DoctorComponent extends StatelessWidget {
-  DoctorComponent({super.key, required this.name, required this.selected, required this.onTap});
-  final String name;
+  DoctorComponent({super.key, required this.dentist, required this.selected, required this.onTap});
+  final Dentist dentist;
   bool selected;
   final VoidCallback onTap;
 
@@ -80,8 +81,9 @@ class DoctorComponent extends StatelessWidget {
       onTap: () => onTap(),
       child: Container(
         decoration: BoxDecoration(
+            color: Colors.white,
             borderRadius: BorderRadius.circular(5),
-            border: Border.all(color: selected ? Colors.green : Colors.white)
+            border: Border.all(color: selected ? Colors.blue : Colors.white24)
         ),
         width: 80,
         child: Column(
@@ -90,13 +92,13 @@ class DoctorComponent extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(50),
               child: Container(
-                  color: Colors.blue,
+                  color: Colors.blue.shade200,
                   height: 55,
-                  child: Image.network('https://yeudialy.edu.vn/upload/2025/05/chibi-bac-si13.webp', width: 55,)
+                  child: dentist.sex ? Image.asset('assets/images/men_doctor.png', width: 55,) : Image.asset('assets/images/women_doctor.png', width: 55,)
               ),
             ),
             SizedBox(height: 7,),
-            Text(name, style: TextStyle(fontSize: 13), textAlign: TextAlign.center,)
+            Text(dentist.name, style: TextStyle(fontSize: 13), textAlign: TextAlign.center,)
           ],
         ),
       ),

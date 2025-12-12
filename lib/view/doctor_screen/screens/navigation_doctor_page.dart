@@ -1,6 +1,10 @@
-import "package:dental_booking_app/view/doctor_screen/screens/appointments_screen.dart";
+import "package:dental_booking_app/view/doctor_screen/screens/schedule_screen.dart";
 import "package:dental_booking_app/view/doctor_screen/screens/setting_screen.dart";
+import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
+
+import "../../../data/model/user_model.dart";
+import "../../../data/repository/user_repository.dart";
 
 void main() {
   runApp(const MaterialApp(
@@ -20,10 +24,13 @@ class NavigationAdminPage extends StatefulWidget{
 }
 
 class _NavigationAdminPageState extends State<NavigationAdminPage>{
+
+  final _userRepo = UserRepository();
+  final _auth = FirebaseAuth.instance;
+
   int _index = 0;
   final pages = [
-    const DentalAppointmentScreen(),
-    const SizedBox(),
+    const ScheduleScreen(),
     const SettingsScreen()
   ];
 
@@ -46,8 +53,6 @@ class _NavigationAdminPageState extends State<NavigationAdminPage>{
         items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month_outlined), label: "Lịch hẹn"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.people), label: "Bệnh nhân"),
           BottomNavigationBarItem(
               icon: Icon(Icons.person), label: "Tài khoản"),
         ],

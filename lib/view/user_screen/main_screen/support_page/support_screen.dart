@@ -15,7 +15,7 @@ class HelpAndSupportScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, size: 19,),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(

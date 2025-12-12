@@ -17,7 +17,7 @@ class RatingScreen extends StatelessWidget {
           Positioned(
             right: -15,
             top: -15,
-            child: IconButton(onPressed: ()=> Navigator.pop(context), icon: Icon(Icons.cancel, size: 22, color: Colors.red,))),
+            child: IconButton(onPressed: ()=> Navigator.pop(context), icon: const Icon(Icons.arrow_back),)),
           Column(
             children: [
               Text('Đánh giá của bạn',style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16), textAlign: TextAlign.center,),

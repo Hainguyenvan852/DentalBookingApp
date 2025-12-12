@@ -9,7 +9,6 @@ import 'package:dental_booking_app/view/user_screen/main_screen/product_catalog_
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart' show LoadingAnimationWidget;
 
@@ -270,8 +269,8 @@ class _InvoiceFromProductScreenState extends State<InvoiceFromProductScreen> {
           ),
         );
       } else{
-        _nameCtrl.text = user.fullName;
-        _phoneCtrl.text = user.phone;
+        _nameCtrl.text = user.fullName!;
+        _phoneCtrl.text = user.phone!;
       }
     });
     super.initState();
@@ -296,7 +295,7 @@ class _InvoiceFromProductScreenState extends State<InvoiceFromProductScreen> {
         backgroundColor: backgroundGrey,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -561,7 +560,7 @@ class _InvoiceFromProductScreenState extends State<InvoiceFromProductScreen> {
                             postalCode: '10000',
                             state: 'Hanoi',
                           );
-                          final result = await makePayment(context, paymentPrice, 'vnd', 'Thanh toán đặt hàng', currentUser!.fullName, currentUser.email, _phoneCtrl.text, address);
+                          final result = await makePayment(context, paymentPrice, 'vnd', 'Thanh toán đặt hàng', currentUser!.fullName!, currentUser.email, _phoneCtrl.text, address);
                           if(result == 'success'){
                             final payment = Payment(
                                 id: 'tmp',
@@ -617,7 +616,8 @@ class _InvoiceFromProductScreenState extends State<InvoiceFromProductScreen> {
                                     invoice: invoice.copyWith(id: resultInvoice),
                                     addressDelivery: '${_addressCtrl.text}, ${_selectedWard!}, $_selectedDistrict, $_fixedProvince',
                                     phoneContact: _phoneCtrl.text,
-                                    status: 'pending'
+                                    status: 'pending',
+                                    customerId: _auth.currentUser!.uid
                                 );
                                 _orderRepo.createNewOrder(order);
 
@@ -655,7 +655,7 @@ class _InvoiceFromProductScreenState extends State<InvoiceFromProductScreen> {
                             final invoice = Invoice(
                                 id: 'tmp',
                                 status: 'non_pay',
-                                amountPaid: widget.product.salePrice*widget.quantity + shippingCost,
+                                amountPaid: 0,
                                 balance: 0,
                                 invoiceType: 'purchase',
                                 createdAt: DateTime.now(),
@@ -689,7 +689,8 @@ class _InvoiceFromProductScreenState extends State<InvoiceFromProductScreen> {
                                   invoice: invoice.copyWith(id: resultInvoice),
                                   addressDelivery: '${_addressCtrl.text}, ${_selectedWard!}, $_selectedDistrict, $_fixedProvince',
                                   phoneContact: _phoneCtrl.text,
-                                  status: 'pending'
+                                  status: 'pending',
+                                  customerId: _auth.currentUser!.uid
                               );
                               final resultOrder = await _orderRepo.createNewOrder(order);
                               if(resultOrder == 'success'){

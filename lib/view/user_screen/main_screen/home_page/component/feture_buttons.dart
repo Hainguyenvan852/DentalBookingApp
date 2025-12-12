@@ -14,7 +14,7 @@ class FeatureButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 205,
+      height: 215,
       padding: EdgeInsets.only(top: 12, left: 8, right: 8),
       child: GridView.count(
         physics: const NeverScrollableScrollPhysics(),
@@ -35,7 +35,7 @@ class FeatureButtons extends StatelessWidget {
                     backgroundColor: Colors.lightBlue[50]
                 ),
               ),
-              Text('Đặt lịch', style: TextStyle(fontSize: 13),)
+              Text('Đặt lịch', style: TextStyle(fontSize: 14),)
             ],
           ),
           Column(
@@ -53,7 +53,7 @@ class FeatureButtons extends StatelessWidget {
                 ),
               ),
               Text('Lịch hẹn của\ntôi',
-                style: TextStyle(fontSize: 13),
+                style: TextStyle(fontSize: 14),
                 textAlign: TextAlign.center,
               )
             ],
@@ -72,7 +72,7 @@ class FeatureButtons extends StatelessWidget {
                     backgroundColor: Colors.lightBlue[50]
                 ),
               ),
-              Text('Ảnh điều trị', style: TextStyle(fontSize: 13),)
+              Text('Ảnh điều trị', style: TextStyle(fontSize: 14),)
             ],
           ),
           Column(
@@ -90,7 +90,7 @@ class FeatureButtons extends StatelessWidget {
                 ),
               ),
               Text('Sản phẩm',
-                style: TextStyle(fontSize: 13),
+                style: TextStyle(fontSize: 14),
               )
             ],
           ),
@@ -109,7 +109,7 @@ class FeatureButtons extends StatelessWidget {
                 ),
               ),
               Text('Danh mục\ndịch vụ',
-                style: TextStyle(fontSize: 13),
+                style: TextStyle(fontSize: 14),
                 textAlign: TextAlign.center,
               )
             ],

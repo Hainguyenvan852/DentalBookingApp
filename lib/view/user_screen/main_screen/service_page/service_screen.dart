@@ -18,7 +18,7 @@ class ServicePage extends StatelessWidget {
             borderSide: BorderSide(width: 0.5, color: Colors.grey)
         ),
         backgroundColor: Colors.white,
-        title: Text('Dịch vụ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        title: Text('Dịch vụ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
         centerTitle: true,
       ),
@@ -64,13 +64,12 @@ class ServiceField extends StatelessWidget {
         height: 100,
         width: double.infinity,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               padding: EdgeInsets.only(left: 10,),
               height: 80,
-              width: 250,
+              width: 260,
               child: Row(
                 children: [
                   Image.network(service.imageUrl, width: 65, height: 65, fit: BoxFit.cover,),
@@ -79,28 +78,27 @@ class ServiceField extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(service.name, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),),
-                      Text(service.description, style: TextStyle(fontSize: 12))
+                      Text(service.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+                      Text(service.description, style: TextStyle(fontSize: 14))
                     ],
                   )
                 ],
               ),
             ),
-            OutlinedButton(
+            const SizedBox(width: 70,),
+            ElevatedButton(
                 onPressed: onPressed,
-                style: OutlinedButton.styleFrom(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)
                     ),
-                    side: BorderSide(
-                        color: Colors.blue
-                    ),
-                    minimumSize: Size(55,28),
+                    minimumSize: Size(60,30),
                     maximumSize: Size(70, 35),
                     padding: EdgeInsets.only()
                 ),
-                child: Text('Đặt lịch', style: TextStyle(fontSize: 10, color: Colors.blue),)
-            )
+                child: Text('Đặt lịch', style: TextStyle(fontSize: 12, color: Colors.white),)
+            ),
           ],
         ),
       ),

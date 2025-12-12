@@ -39,7 +39,7 @@ class _InstallmentPaymentState extends State<InstallmentPayment> with SingleTick
         title: const Text('Thanh toán trả góp', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),),
         centerTitle: true,
         backgroundColor: Colors.grey.shade100,
-        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios_new_rounded, size: 19,)),
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.arrow_back),),
       ),
       backgroundColor: Colors.grey.shade100,
       body: MultiRepositoryProvider(

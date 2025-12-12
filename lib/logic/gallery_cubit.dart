@@ -40,15 +40,17 @@ class GalleryState{
 }
 
 class GalleryCubit extends Cubit<GalleryState>{
-  GalleryCubit({required this.repo}) : super(GalleryState());
+  GalleryCubit({required this.repo, required this.userId}) : super(GalleryState());
 
   final GalleryRepository repo;
+  final String userId;
+
 
   Future<void> loadFirst() async{
     emit(state.copyWith(initialLoading: true));
 
     try{
-      final res = await repo.fetchPage(limit: 18, cursor: null);
+      final res = await repo.fetchPage(limit: 18, cursor: null, userId: userId);
 
       emit(state.copyWith(
         items: res.items,
@@ -67,7 +69,7 @@ class GalleryCubit extends Cubit<GalleryState>{
     emit(state.copyWith(loadingMore: true));
 
     try{
-      final res = await repo.fetchPage(limit: 18, cursor: state.lastDocs);
+      final res = await repo.fetchPage(limit: 18, cursor: state.lastDocs, userId: userId);
 
       emit(state.copyWith(
           items: [...state.items, ...res.items],
@@ -83,7 +85,7 @@ class GalleryCubit extends Cubit<GalleryState>{
     emit(state.copyWith(refreshing: true));
 
     try{
-      final res = await repo.fetchPage(limit: 18, cursor: null);
+      final res = await repo.fetchPage(limit: 18, cursor: null, userId: userId);
 
       emit(state.copyWith(
         items: res.items,

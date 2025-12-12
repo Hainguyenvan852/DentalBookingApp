@@ -1,6 +1,15 @@
+import 'package:dental_booking_app/data/model/dentist_model.dart';
+import 'package:dental_booking_app/data/model/user_model.dart';
+import 'package:dental_booking_app/data/repository/user_repository.dart';
+import 'package:dental_booking_app/view/doctor_screen/screens/user_info_screen.dart';
 import 'package:dental_booking_app/view/user_screen/sign_in_page/bloc/auth_cubit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
+import '../../../data/repository/dentist_repository.dart';
+import 'change_password_screen.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -9,8 +18,36 @@ void main() {
   ));
 }
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+
+  final _auth = FirebaseAuth.instance;
+  final _dentistsRepo = DentistRepository();
+  final _userRepo = UserRepository();
+  late final Future<dynamic> dentistFuture;
+
+
+  @override
+  void initState() {
+    super.initState();
+    dentistFuture =  _fetchDentistData();
+  }
+
+  Future<dynamic> _fetchDentistData() async {
+    final user = await _userRepo.getUser(_auth.currentUser!.uid);
+
+    if (user == null || user.clinicId == null || user.staffId == null) {
+      throw Exception("Không tìm thấy thông tin người dùng");
+    }
+
+    return await _dentistsRepo.getById(user.staffId!, user.clinicId!);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,132 +62,144 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          'Cài đặt',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
+      body: FutureBuilder(
+          future: dentistFuture,
+          builder: (context, snap){
+            if (snap.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: LoadingAnimationWidget.waveDots(
+                  color: Colors.blue,
+                  size: 35,
+                ),
+              );
+            }
+
+            if (snap.error != null || !snap.hasData) {
+              return Center(child: Text('Error ${snap.error.toString()}'));
+            }
+
+            final dentist = snap.data;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CircleAvatar(
-                  radius: 30,
-                  backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=11'),
+                Container(
+                  color: Colors.white,
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundImage: dentist!.sex ? AssetImage('assets/images/men_doctor.png') : AssetImage('assets/images/women_doctor.png'),
+                        backgroundColor: Colors.blue.shade300,
+                      ),
+                      const SizedBox(width: 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            dentist.name,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Bác sĩ nha khoa',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Nguyễn Văn Hải',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+
+                const SizedBox(height: 20),
+
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    'Tài khoản',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      _buildMenuItem(
+                        icon: Icons.person,
+                        text: 'Thông tin cá nhân',
+                        iconColor: iconBlue,
+                        iconBgColor: iconBlueBg,
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(dentist: dentist))),
+                      ),
+                      Center(child: const Divider(height: 0.5, indent: 0,)),
+                      _buildMenuItem(
+                        icon: Icons.lock,
+                        text: 'Thay đổi mật khẩu',
+                        iconColor: iconBlue,
+                        iconBgColor: iconBlueBg,
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangePasswordScreen())),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const Spacer(),
+
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: InkWell(
+                    onTap: () => context.read<AuthCubit>().signOut(),
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: logoutBg,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.logout, color: logoutRed, size: 20),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Đăng xuất',
+                            style: TextStyle(
+                              color: logoutRed,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(height: 4),
-                    Text(
-                      'Quản trị viên',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                )
+                  ),
+                ),
+                const SizedBox(height: 20),
               ],
-            ),
-          ),
-          
-          const SizedBox(height: 20),
-
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              'Tài khoản',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              children: [
-                _buildMenuItem(
-                  icon: Icons.person,
-                  text: 'Thông tin cá nhân',
-                  iconColor: iconBlue,
-                  iconBgColor: iconBlueBg,
-                  onTap: () {},
-                ),
-                Center(child: const Divider(height: 0.5, indent: 0,)),
-                _buildMenuItem(
-                  icon: Icons.lock,
-                  text: 'Thay đổi mật khẩu',
-                  iconColor: iconBlue,
-                  iconBgColor: iconBlueBg,
-                  onTap: () {},
-                ),
-              ],
-            ),
-          ),
-
-          const Spacer(),
-
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: InkWell(
-              onTap: () => context.read<AuthCubit>().signOut(),
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: logoutBg,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.logout, color: logoutRed, size: 20), 
-                    const SizedBox(width: 8),
-                    Text(
-                      'Đăng xuất',
-                      style: TextStyle(
-                        color: logoutRed,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-        ],
-      ),
+            );
+          }
+      )
     );
   }
 

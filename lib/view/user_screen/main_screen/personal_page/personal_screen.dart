@@ -1,5 +1,6 @@
 import 'package:dental_booking_app/logic/user_cubit.dart';
 import 'package:dental_booking_app/view/user_screen/main_screen/chat_bot/chatbot_screen.dart';
+import 'package:dental_booking_app/view/user_screen/main_screen/doctor_info_page/doctor_list_screen.dart';
 import 'package:dental_booking_app/view/user_screen/main_screen/gallery_page/gallery_screen.dart';
 import 'package:dental_booking_app/view/user_screen/main_screen/medical_cost_page/payment_history_screen.dart';
 import 'package:dental_booking_app/view/user_screen/main_screen/personal_page/profile_screen.dart';
@@ -78,10 +79,14 @@ class _PersonalPageState extends State<PersonalPage> {
                 FeatureBox(featureName: 'Lịch Trả Góp', featureIcon: Icons.payment,
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const InstallmentPayment())),
                 ),
-                FeatureBox(featureName: 'Ảnh Điều Trị', featureIcon: Icons.image_outlined,
+                FeatureBox(featureName: 'Ảnh Điều Trị Và Bệnh Án', featureIcon: Icons.image_outlined,
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const GalleryPage())),
                 ),
-                FeatureBox(featureName: 'Nhân viên tư vấn Chatbot', featureIcon: Icons.file_copy_outlined, onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen())),
+                FeatureBox(featureName: 'Nhân Viên Tư Vấn Chatbot', featureIcon: Icons.support_agent_outlined,
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen())),
+                ),
+                FeatureBox(featureName: 'Thông Tin Bác Sĩ', featureIcon: Icons.assignment_ind,
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const DoctorListScreen())),
                 ),
                 FeatureBox(featureName: 'Liên Hệ Và Trợ Giúp', featureIcon: Icons.help_outline,
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HelpAndSupportScreen())),
@@ -126,7 +131,7 @@ class PictureAndName extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             SizedBox(height: 12,),
-            Text(state.user!.fullName, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 21),)
+            Text(state.user!.fullName!, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 21),)
           ],
         );
       }

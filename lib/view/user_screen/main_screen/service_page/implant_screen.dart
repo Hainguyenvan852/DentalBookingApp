@@ -49,7 +49,7 @@ class _HeroAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      leading: IconButton(onPressed: ()=> Navigator.pop(context), icon: Icon(Icons.arrow_back_ios_new, size: 19, color: Colors.white,)),
+      leading: IconButton(onPressed: ()=> Navigator.pop(context), icon: const Icon(Icons.arrow_back, color: Colors.white,),),
       pinned: true,
       expandedHeight: 260,
       backgroundColor: Colors.lightBlue.shade200,

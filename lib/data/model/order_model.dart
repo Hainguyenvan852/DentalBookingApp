@@ -5,6 +5,7 @@ class OrderModel{
   final Invoice invoice;
   final String addressDelivery;
   final String phoneContact;
+  final String customerId;
   final String status;
 
   const OrderModel({
@@ -13,5 +14,6 @@ class OrderModel{
     required this.addressDelivery,
     required this.phoneContact,
     required this.status,
+    required this.customerId,
   });
 }

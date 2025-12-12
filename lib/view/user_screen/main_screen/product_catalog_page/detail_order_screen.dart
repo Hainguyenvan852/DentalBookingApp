@@ -67,7 +67,7 @@ class OrderDetailScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 19),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -245,7 +245,7 @@ class OrderDetailScreen extends StatelessWidget {
                                       }
 
                                       return Text(
-                                        snap.data!.fullName,
+                                        snap.data!.fullName!,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                         ),

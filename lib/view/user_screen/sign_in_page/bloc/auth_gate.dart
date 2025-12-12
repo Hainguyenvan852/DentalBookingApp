@@ -1,4 +1,3 @@
-import 'package:dental_booking_app/view/doctor_screen/screens/admin_dashboard.dart';
 import 'package:dental_booking_app/view/doctor_screen/screens/navigation_doctor_page.dart';
 import 'package:dental_booking_app/view/user_screen/sign_up_page/sign_up_screen.dart';
 import 'package:flutter/material.dart';

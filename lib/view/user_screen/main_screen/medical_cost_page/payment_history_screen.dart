@@ -29,11 +29,11 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: const Text('Lịch sử thanh toán', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),),
+        title: const Text('Lịch sử thanh toán', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),),
         centerTitle: true,
         shape: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
         backgroundColor: Colors.grey.shade100,
-        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios_new_rounded, size: 19,)),
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.arrow_back),),
       ),
       body: SafeArea(
           child: FutureBuilder(

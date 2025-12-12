@@ -37,12 +37,12 @@ class _RescheduleScreenState extends State<RescheduleScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, size: 20),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text("Đổi khung thời gian", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+        title: const Text("Đổi khung thời gian", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
         centerTitle: true,
       ),
 

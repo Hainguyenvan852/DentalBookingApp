@@ -36,6 +36,7 @@ firebase-admin-tools/
 .pub-cache/
 .pub/
 /build/
+/funtions
 /android/app/build/
 /android/build/
 /android/app/release/
@@ -55,3 +56,4 @@ app.*.map.json
 firebase-admin-tools/serviceAccountKey.json
 
 .env
+**/build/

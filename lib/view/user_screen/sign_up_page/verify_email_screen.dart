@@ -89,7 +89,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'Quay lại đăng nhập',
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () async {
             await context.read<AuthCubit>().signOut();
             if (!mounted) return;
@@ -121,7 +121,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  // Nếu cần: mở app email, deep link mailto:, v.v.
                   context.read<AuthCubit>().signOut();
                 },
                 style: ElevatedButton.styleFrom(

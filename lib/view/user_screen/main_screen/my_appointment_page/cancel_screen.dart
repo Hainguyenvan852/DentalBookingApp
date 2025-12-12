@@ -29,7 +29,7 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black, size: 19),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },

@@ -27,9 +27,9 @@ import 'component/dentist_selection.dart';
 import 'component/service_field.dart';
 import 'component/time_slot_selections.dart';
 
-
 class BookingPage extends StatefulWidget {
   const BookingPage({super.key, required this.initService});
+
   final Service? initService;
 
   @override
@@ -47,6 +47,7 @@ class _BookingPageState extends State<BookingPage> {
   late final ServiceRepository serviceRepo;
   late final AppointmentRepository apmRepo;
 
+  bool isBookingForAnother = false;
 
   BookingWiringExample? _wiring;
 
@@ -69,10 +70,8 @@ class _BookingPageState extends State<BookingPage> {
     apmRepo = AppointmentRepository();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<ClinicRepository>.value(value: clinicRepo),
@@ -83,7 +82,9 @@ class _BookingPageState extends State<BookingPage> {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => BranchCubit(clinicRepo)..load()),
-          BlocProvider(create: (_) => ServiceCubit(serviceRepo)..load(widget.initService)),
+          BlocProvider(
+            create: (_) => ServiceCubit(serviceRepo)..load(widget.initService),
+          ),
           BlocProvider(create: (_) => DentistCubit(doctorRepo)),
           BlocProvider(create: (_) => DateCubit()),
           BlocProvider(create: (_) => ClinicConfigCubit()),
@@ -93,116 +94,177 @@ class _BookingPageState extends State<BookingPage> {
           BlocProvider(create: (_) => NoteCubit()),
         ],
         child: Builder(
-            builder:(context){
-              _wiring ??= BookingWiringExample(
-                branchCubit: context.read<BranchCubit>(),
-                serviceCubit: context.read<ServiceCubit>(),
-                dentistCubit: context.read<DentistCubit>(),
-                dateCubit: context.read<DateCubit>(),
-                clinicCfgCubit: context.read<ClinicConfigCubit>(),
-                appointmentCubit: context.read<AppointmentCubit>(),
-                timeSlotCubit: context.read<TimeSlotCubit>(),
-                draftCubit: context.read<BookingDraftCubit>(),
-                noteCubit: context.read<NoteCubit>(),
-                auth: FirebaseAuth.instance
-              );
+          builder: (context) {
+            _wiring ??= BookingWiringExample(
+              branchCubit: context.read<BranchCubit>(),
+              serviceCubit: context.read<ServiceCubit>(),
+              dentistCubit: context.read<DentistCubit>(),
+              dateCubit: context.read<DateCubit>(),
+              clinicCfgCubit: context.read<ClinicConfigCubit>(),
+              appointmentCubit: context.read<AppointmentCubit>(),
+              timeSlotCubit: context.read<TimeSlotCubit>(),
+              draftCubit: context.read<BookingDraftCubit>(),
+              noteCubit: context.read<NoteCubit>(),
+              auth: FirebaseAuth.instance,
+            );
 
-              return Scaffold(
-                  appBar: AppBar(
-                    backgroundColor: Colors.white,
-                    leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, size: 19,)),
-                    centerTitle: true,
-                    title: const Text('Đặt lịch hẹn',
-                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-                  ),
-                  body: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: ListView(
-                              children: [
-                                BranchField(controller: branchCtrl,),
-                                SizedBox(height: 15,),
-                                ServiceField(controller: serviceCtrl,),
-                                SizedBox(height: 15,),
-                                DentistSelection(),
-                                SizedBox(height: 15,),
-                                DateField(),
-                                SizedBox(height: 15,),
-                                TimeSlotSelections(),
-                                SizedBox(height: 15,),
-                                BlocBuilder<NoteCubit, NoteState>(
-                                    builder: (context, state){
-                                      return SizedBox(
-                                        height: 170,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text('Nội dung', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
-                                            SizedBox(height: 8,),
-                                            Expanded(
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(),
-                                                  borderRadius: BorderRadius.circular(8),
-                                                ),
-                                                child: Padding(
-                                                    padding: EdgeInsets.only(left: 10, right: 5, ),
-                                                    child: TextFormField(
-                                                      cursorColor: Colors.black,
-                                                      maxLines: 5,
-                                                      controller: noteCtrl,
-                                                      style: TextStyle(fontSize: 14, ),
-                                                      decoration: InputDecoration(
-                                                        border: InputBorder.none,
-                                                        contentPadding: EdgeInsets.only(top: 5),
-                                                      ),
-                                                      onChanged: (v)=>context.read<BookingDraftCubit>().setNotes(v),
-                                                    )
-                                                ),
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                leading: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.arrow_back),
+                ),
+                centerTitle: true,
+                title: const Text(
+                  'Đặt lịch hẹn',
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+                ),
+              ),
+              body: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 15,
+                ),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          BranchField(controller: branchCtrl),
+                          SizedBox(height: 15),
+                          ServiceField(controller: serviceCtrl),
+                          SizedBox(height: 15),
+                          DentistSelection(),
+                          SizedBox(height: 15),
+                          Row(
+                            children: [
+                              Checkbox(
+                                checkColor: Colors.white,
+                                activeColor: Colors.blue,
+                                value: isBookingForAnother,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isBookingForAnother = value!;
+                                  });
+                                },
+                              ),
+                              Text(
+                                "Đặt lịch cho người thân",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 15),
+                          DateField(),
+                          SizedBox(height: 15),
+                          TimeSlotSelections(),
+                          SizedBox(height: 15),
+                          BlocBuilder<NoteCubit, NoteState>(
+                            builder: (context, state) {
+                              return SizedBox(
+                                height: 170,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Nội dung',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: 10,
+                                            right: 5,
+                                          ),
+                                          child: TextFormField(
+                                            cursorColor: Colors.black,
+                                            maxLines: 5,
+                                            controller: noteCtrl,
+                                            style: TextStyle(fontSize: 14),
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              contentPadding: EdgeInsets.only(
+                                                top: 5,
                                               ),
                                             ),
-                                          ],
+                                            onChanged:
+                                                (v) => context
+                                                    .read<BookingDraftCubit>()
+                                                    .setNotes(v),
+                                          ),
                                         ),
-                                      );
-                                    }
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(height: 15,)
-                              ]
+                              );
+                            },
                           ),
-                        ),
-                        BlocBuilder<BookingDraftCubit, BookingDraftState>(
-                            builder: (context, st){
-                              return ElevatedButton(
-                                  onPressed: st.readyToSubmit && !st.submitting ? () async {
+                          SizedBox(height: 15),
+                        ],
+                      ),
+                    ),
+                    BlocBuilder<BookingDraftCubit, BookingDraftState>(
+                      builder: (context, st) {
+                        return ElevatedButton(
+                          onPressed:
+                              st.readyToSubmit && !st.submitting
+                                  ? () async {
                                     final apmRepo = context.read<AppointmentRepository>();
                                     context.read<BookingDraftCubit>().setSubmitting(true);
-                                    try{
+                                    try {
                                       context.read<BookingDraftCubit>().setSubmitting(false);
-                                      await submitBooking(draft: context.read<BookingDraftCubit>(), apmRepo: apmRepo, patientId: FirebaseAuth.instance.currentUser!.uid);
+                                      await submitBooking(
+                                        draft: context.read<BookingDraftCubit>(),
+                                        apmRepo: apmRepo,
+                                        patientId: FirebaseAuth.instance.currentUser!.uid,
+                                        isBookingForAnother: isBookingForAnother
+                                      );
                                       _showSuccessSheet(context);
-                                    } catch(e){
-                                      context.read<BookingDraftCubit>().setSubmitting(false);
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Lỗi: $e')));
+                                    } catch (e) {
+                                      context
+                                          .read<BookingDraftCubit>()
+                                          .setSubmitting(false);
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(content: Text('Lỗi: $e')),
+                                      );
                                     }
-                                  } : null,
-                                  style: ElevatedButton.styleFrom(
-                                      maximumSize: Size(double.infinity, 100),
-                                      minimumSize: Size(double.infinity, 50),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10)
-                                      ),
-                                      backgroundColor: Colors.blue[400]
-                                  ),
-                                  child: Text('Đặt lịch', style: TextStyle(fontSize: 16, color: Colors.white),)
-                              );
-                            })
-                      ],
+                                  }
+                                  : null,
+                          style: ElevatedButton.styleFrom(
+                            maximumSize: Size(double.infinity, 100),
+                            minimumSize: Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            backgroundColor: Colors.blue[400],
+                          ),
+                          child: Text(
+                            'Đặt lịch',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        );
+                      },
                     ),
-                  )
-              );
-            }
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -213,6 +275,7 @@ Future<void> submitBooking({
   required BookingDraftCubit draft,
   required AppointmentRepository apmRepo,
   required String patientId,
+  required bool isBookingForAnother
 }) async {
   final st = draft.state;
   if (!st.readyToSubmit) {
@@ -231,6 +294,7 @@ Future<void> submitBooking({
     startAt: slot.startAt,
     endAt: end,
     notes: st.notes,
+    isBookingForAnother: isBookingForAnother,
   );
   await apmRepo.create(req);
 }
@@ -238,40 +302,61 @@ Future<void> submitBooking({
 void _showSuccessSheet(BuildContext context) {
   final draft = context.read<BookingDraftCubit>().state;
   showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (_) {
-        return Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
+    context: context,
+    isScrollControlled: true,
+    builder: (_) {
+      return Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             const Icon(Icons.check_circle, size: 48),
             const SizedBox(height: 8),
-            Text('Đặt lịch thành công', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+            Text(
+              'Đặt lịch thành công',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 6),
-            Text('${draft.clinic!.name} • ${draft.service!.name}\n${_fmtSlot(draft.slot!)}', textAlign: TextAlign.center),
+            Text(
+              '${draft.clinic!.name} • ${draft.service!.name}\n${_fmtSlot(draft.slot!)}',
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 16),
-            Row(children: [
-              Expanded(child: OutlinedButton(
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyAppointmentPage()));
-                },
-                child: const Text('Xem lịch hẹn'),
-              )),
-              const SizedBox(width: 12),
-              Expanded(child: FilledButton(
-                onPressed: (){
-                  Navigator.popUntil(context, (route) => route.isFirst,);
-                },
-                child: const Text('Về trang chủ'),
-              )),
-            ]),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyAppointmentPage(),
+                        ),
+                      );
+                    },
+                    child: const Text('Xem lịch hẹn'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: FilledButton(
+                    onPressed: () {
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                    },
+                    child: const Text('Về trang chủ'),
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 12),
-          ]),
-        );
-      }
+          ],
+        ),
+      );
+    },
   );
 }
+
 String _fmtSlot(TimeSlot s) =>
-    '${s.startAt.hour.toString().padLeft(2,'0')}:${s.startAt.minute.toString().padLeft(2,'0')}'
+    '${s.startAt.hour.toString().padLeft(2, '0')}:${s.startAt.minute.toString().padLeft(2, '0')}'
     ' - '
-    '${s.endAt.hour.toString().padLeft(2,'0')}:${s.endAt.minute.toString().padLeft(2,'0')}';
+    '${s.endAt.hour.toString().padLeft(2, '0')}:${s.endAt.minute.toString().padLeft(2, '0')}';

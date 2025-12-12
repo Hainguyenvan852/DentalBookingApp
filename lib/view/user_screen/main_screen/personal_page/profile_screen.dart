@@ -1,3 +1,4 @@
+import 'package:dental_booking_app/view/user_screen/main_screen/personal_page/update_password_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late UserModel user;
   bool _canSubmit = false;
   bool _hydrated = false;
+
 
   final _phoneCtrl = TextEditingController();
   final _dateCtrl = TextEditingController();
@@ -55,10 +57,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _hydrateOnce(UserModel u) {
     if (_hydrated) return;
-    _phoneCtrl.text   = u.phone;
+    _phoneCtrl.text   = u.phone!;
     _addressCtrl.text = u.address ?? '';
     _dateCtrl.text    = u.dob!= null ? DateFormat('dd/MM/yyyy').format(u.dob!) : '';
-    _nameCtrl.text = u.fullName;
+    _nameCtrl.text = u.fullName!;
     _emailCtrl.text = u.email;
     _hydrated = true;
     user = u;
@@ -138,10 +140,26 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: const Text('Cập nhật hồ sơ', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17),),
+        title: const Text('Cập nhật hồ sơ', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),),
         centerTitle: true,
         backgroundColor: Colors.grey.shade100,
-        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios_new_rounded, size: 19,)),
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.arrow_back),),
+        actions: [
+          PopupMenuButton<String>(
+            color: Colors.white,
+            icon: const Icon(Icons.more_horiz_rounded),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<String>(
+                  value: 'Thay đổi mật khẩu',
+                  child: Text('Thay đổi mật khẩu'),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangePasswordScreen()))
+                )
+              ];
+            },
+          ),
+        ],
       ),
       body: SafeArea(
           child: BlocBuilder<UserCubit, UserState>(

@@ -42,8 +42,8 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage> {
           return Scaffold(
               backgroundColor: Colors.grey.shade200,
               appBar: AppBar(
-                leading: IconButton(onPressed: () => Navigator.pop(context, true), icon: Icon(Icons.arrow_back_ios, size: 19,)),
-                title: Text('Chi tiết lịch hẹn', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+                leading: IconButton(onPressed: () => Navigator.pop(context, true), icon: const Icon(Icons.arrow_back),),
+                title: Text('Chi tiết lịch hẹn', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
                 centerTitle: true,
                 shape: UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -70,7 +70,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage> {
                               Container(
                                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                                 color: Colors.white,
-                                height: 280,
+                                height: 320,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -87,7 +87,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage> {
                                         children: [
                                           SvgPicture.asset('assets/icons/user_outline.svg', height: 24,color: Colors.black54),
                                           SizedBox(width: 15,),
-                                          Text(snap.data!.fullName)
+                                          Text(snap.data!.fullName!)
                                         ],
                                       ),
                                     ),
@@ -98,7 +98,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage> {
                                         children: [
                                           Icon(Icons.phone_outlined, size: 22, color: Colors.black54),
                                           SizedBox(width: 15,),
-                                          Text(snap.data!.phone)
+                                          Text(snap.data!.phone!)
                                         ],
                                       ),
                                     ),
@@ -124,6 +124,9 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage> {
                                         ],
                                       ),
                                     ),
+                                    SizedBox(height: 20,),
+                                    if(state.detail!.appointment.isBookingForAnother)
+                                      Text("**Đặt lịch hẹn cho người thân**"),
                                   ],
                                 ),
                               ),
@@ -500,6 +503,7 @@ Future<void> showCancelBooking(BuildContext context, AppointmentDetailCubit cubi
     )
   );
 }
+
 Future<void> showCancelBookingOverTime(BuildContext context, AppointmentDetailCubit cubit, Appointment apm) {
   //const Color darkTeal = Color(0xFF0B5F6C);
 

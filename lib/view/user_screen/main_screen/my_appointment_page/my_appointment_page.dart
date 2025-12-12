@@ -26,7 +26,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
   @override
   void initState() {
     super.initState();
-    repo = AppointmentDetailRepository(userId:_auth.currentUser!.uid );
+    repo = AppointmentDetailRepository(userId:_auth.currentUser!.uid);
   }
 
   @override
@@ -35,7 +35,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
       create: (_) => repo,
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => MyAppointmentCubit(repo)..load()),
+          BlocProvider(create: (_) => MyAppointmentCubit(repo)..loadForUser()),
           BlocProvider(create: (_) => AppointmentDetailCubit(repo)),
         ],
         child: Builder(
@@ -43,7 +43,10 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                 appBar: AppBar(
                   title: Text('Lịch hẹn của tôi', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
                   centerTitle: true,
-                  leading: IconButton(onPressed: () => Navigator.popUntil(context, (route) => route.isFirst), icon: Icon(Icons.arrow_back_ios, size: 19,)),
+                  leading: IconButton(
+                      onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
+                      icon: const Icon(Icons.arrow_back),
+                  ),
                   shape: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Colors.grey,
@@ -102,7 +105,7 @@ class AppointmentBox extends StatelessWidget {
         );
 
         if(changed == true){
-          await context.read<MyAppointmentCubit>().refresh();
+          await context.read<MyAppointmentCubit>().refreshForPatient();
         }
       },
       child: Container(

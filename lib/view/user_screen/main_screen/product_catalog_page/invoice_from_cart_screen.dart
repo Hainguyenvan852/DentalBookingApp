@@ -139,8 +139,8 @@ class _InvoiceFromCartScreenState extends State<InvoiceFromCartScreen> {
           ),
         );
       } else{
-        _nameCtrl.text = user.fullName;
-        _phoneCtrl.text = user.phone;
+        _nameCtrl.text = user.fullName!;
+        _phoneCtrl.text = user.phone!;
       }
     });
     super.initState();
@@ -164,7 +164,7 @@ class _InvoiceFromCartScreenState extends State<InvoiceFromCartScreen> {
         backgroundColor: backgroundGrey,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20,),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -382,7 +382,7 @@ class _InvoiceFromCartScreenState extends State<InvoiceFromCartScreen> {
                           );
                         } else{
                           if(_selectedPaymentMethod == 0) {
-                            final paymentPrice = (widget.totalAmount).toString();
+                            final paymentPrice = (widget.totalAmount + shippingCost).toString();
                             final address = Address(
                               city: 'Hà Nội',
                               country: 'VN',
@@ -391,13 +391,13 @@ class _InvoiceFromCartScreenState extends State<InvoiceFromCartScreen> {
                               postalCode: '10000',
                               state: 'Hanoi',
                             );
-                            final result = await makePayment(context, paymentPrice, 'vnd', 'Thanh toán đặt hàng', currentUser.fullName, currentUser.email, _phoneCtrl.text, address);
+                            final result = await makePayment(context, paymentPrice, 'vnd', 'Thanh toán đặt hàng', currentUser.fullName!, currentUser.email, _phoneCtrl.text, address);
                             if(result == 'success'){
                               final payment = Payment(
                                   id: 'tmp',
                                   method: 'banking',
                                   createdAt: DateTime.now(),
-                                  amount: widget.totalAmount,
+                                  amount: widget.totalAmount + shippingCost,
                                   userId: _auth.currentUser!.uid,
                                   description: 'Thanh toán đặt hàng'
                               );
@@ -413,11 +413,11 @@ class _InvoiceFromCartScreenState extends State<InvoiceFromCartScreen> {
                               } else{
                                 final invoice = Invoice(id: 'tmp',
                                     status: 'paid',
-                                    amountPaid: widget.totalAmount,
+                                    amountPaid: widget.totalAmount + shippingCost,
                                     balance: 0,
                                     invoiceType: 'purchase',
                                     createdAt: DateTime.now(),
-                                    totalAmount: widget.totalAmount,
+                                    totalAmount: widget.totalAmount + shippingCost,
                                     patientId: _auth.currentUser!.uid,
                                     paymentId: resultPay,
                                     paymentType: 'pay_now',
@@ -428,7 +428,7 @@ class _InvoiceFromCartScreenState extends State<InvoiceFromCartScreen> {
                                         'nameItem' : e.nameProduct,
                                         'quantity' : e.quantity,
                                         'unitPrice' : e.price,
-                                        'totalPrice' : widget.totalAmount
+                                        'totalPrice' : e.price * e.quantity
                                       }).toList()
                                 );
                                 final resultInvoice = await _invoiceRepo.createNewInvoice(invoice);
@@ -446,7 +446,8 @@ class _InvoiceFromCartScreenState extends State<InvoiceFromCartScreen> {
                                       invoice: invoice.copyWith(id: resultInvoice),
                                       addressDelivery: '${_addressCtrl.text}, ${_selectedWard!}, $_selectedDistrict, $_fixedProvince',
                                       phoneContact: _phoneCtrl.text,
-                                      status: 'pending'
+                                      status: 'pending',
+                                      customerId: _auth.currentUser!.uid
                                   );
                                   final resultOrder = await _orderRepo.createNewOrder(order);
                                   if(resultOrder == 'success'){
@@ -487,7 +488,7 @@ class _InvoiceFromCartScreenState extends State<InvoiceFromCartScreen> {
                                 id: 'tmp',
                                 method: 'pay_later',
                                 createdAt: DateTime.now(),
-                                amount: widget.totalAmount,
+                                amount: widget.totalAmount + shippingCost,
                                 userId: _auth.currentUser!.uid,
                                 description: 'Thanh toán đặt hàng'
                             );
@@ -504,11 +505,11 @@ class _InvoiceFromCartScreenState extends State<InvoiceFromCartScreen> {
                               final invoice = Invoice(
                                   id: 'tmp',
                                   status: 'non_pay',
-                                  amountPaid: widget.totalAmount,
+                                  amountPaid: 0,
                                   balance: 0,
                                   invoiceType: 'purchase',
                                   createdAt: DateTime.now(),
-                                  totalAmount: widget.totalAmount,
+                                  totalAmount: widget.totalAmount + shippingCost,
                                   patientId: _auth.currentUser!.uid,
                                   paymentId: resultPay,
                                   paymentType: 'pay_later',
@@ -519,7 +520,7 @@ class _InvoiceFromCartScreenState extends State<InvoiceFromCartScreen> {
                                       'nameItem' : e.nameProduct,
                                       'quantity' : e.quantity,
                                       'unitPrice' : e.price,
-                                      'totalPrice' : widget.totalAmount
+                                      'totalPrice' : e.quantity * e.price
                                     }).toList()
                               );
                               final resultInvoice = await _invoiceRepo.createNewInvoice(invoice);
@@ -537,7 +538,8 @@ class _InvoiceFromCartScreenState extends State<InvoiceFromCartScreen> {
                                     invoice: invoice.copyWith(id: resultInvoice),
                                     addressDelivery: '${_addressCtrl.text}, ${_selectedWard!}, $_selectedDistrict, $_fixedProvince',
                                     phoneContact: _phoneCtrl.text,
-                                    status: 'pending'
+                                    status: 'pending',
+                                    customerId: _auth.currentUser!.uid
                                 );
                                 final resultOrder = await _orderRepo.createNewOrder(order);
                                 if(resultOrder == 'success'){

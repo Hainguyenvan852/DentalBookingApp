@@ -53,7 +53,7 @@ class _ProductCatalogPageState extends State<ProductCatalogPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Danh mục sản phẩm',
-            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18)),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8.0),

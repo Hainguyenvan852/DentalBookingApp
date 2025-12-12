@@ -10,19 +10,21 @@ class PageResult {
 }
 
 class GalleryRepository {
-  final _col = FirebaseFirestore.instance
-      .collection('users')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('picture_storage')
-      .withConverter(
-        fromFirestore: (snap, _) => snap.data()!,
-        toFirestore: (data, _) => data,
-      );
-
   Future<PageResult> fetchPage({
+    required String userId,
     int limit = 18,
     DocumentSnapshot<Map<String, dynamic>>? cursor,
   }) async {
+
+    final _col = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('picture_storage')
+        .withConverter(
+      fromFirestore: (snap, _) => snap.data()!,
+      toFirestore: (data, _) => data,
+    );
+
     Query<Map<String, dynamic>> q = _col.orderBy('createdAt', descending: true);
 
     if (cursor != null) {

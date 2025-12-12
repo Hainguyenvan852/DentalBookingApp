@@ -24,18 +24,33 @@ class MyAppointmentCubit extends Cubit<MyAppointmentState>{
 
   MyAppointmentCubit(this.repo) : super(MyAppointmentState(apmDetails: [], loading: false));
 
-  Future<void> load() async {
+  Future<void> loadForUser() async {
     emit(state.copyWith(loading: true));
 
     try{
-      final list = await repo.getAll();
+      final list = await repo.getAllForUser();
       emit(state.copyWith(apmDetails: list, loading: false));
     } catch(e){
       emit(state.copyWith(error: e, loading: false));
     }
   }
 
-  Future<void> refresh() async {
-    await load();
+  Future<void> loadForDoctor() async {
+    emit(state.copyWith(loading: true));
+
+    try{
+      final list = await repo.getAllForDoctor();
+      emit(state.copyWith(apmDetails: list, loading: false));
+    } catch(e){
+      emit(state.copyWith(error: e, loading: false));
+    }
+  }
+
+  Future<void> refreshForPatient() async {
+    await loadForUser();
+  }
+
+  Future<void> refreshForDoctor() async {
+    await loadForDoctor();
   }
 }
